@@ -1,0 +1,178 @@
+.popup {
+position: fixed;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+background-color: rgba(0, 0, 0, 0.7);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(4px);
+}
+
+.popup-inner {
+background: white;
+padding: 48px 36px 36px 36px;
+border-radius: 18px;
+width: 400px;
+max-width: 90%;
+box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+border: 1.5px solid #e0e0e0;
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+position: relative;
+animation: popup-scale-in 0.25s cubic-bezier(0.4,0.2,0.2,1) both;
+}
+
+@keyframes popup-scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popup-inner h2 {
+margin: 0 0 30px 0;
+color: #222;
+font-weight: 400;
+letter-spacing: 1px;
+font-size: 1.7rem;
+}
+
+.popup-inner .form-group {
+width: 100%;
+margin-bottom: 22px;
+display: flex;
+flex-direction: column;
+align-items: stretch;
+}
+
+.popup-inner label {
+width: 100%;
+max-width: 100%;
+margin-bottom: 7px;
+text-align: left;
+color: #333;
+font-size: 15px;
+font-weight: 500;
+letter-spacing: 0.2px;
+}
+
+.popup-inner input {
+width: 100%;
+padding: 12px;
+border: 1px solid #ddd;
+border-radius: 6px;
+font-size: 16px;
+background: #f9f9f9;
+outline: none;
+transition: border 0.2s;
+box-sizing: border-box;
+margin-bottom: 0;
+}
+
+.popup-inner input:focus {
+border-color: #222;
+background: #fff;
+}
+
+.save-btn {
+background: #222;
+color: #fff;
+border: none;
+border-radius: 6px;
+padding: 13px 0;
+margin-top: 10px;
+cursor: pointer;
+font-size: 17px;
+font-weight: 500;
+width: 100%;
+box-sizing: border-box;
+transition: background 0.2s, color 0.2s;
+}
+
+.save-btn:hover {
+background: #444;
+}
+
+.popup-inner button:not(.close-btn) {
+background: white;
+color: #222;
+border: 1px solid #222;
+border-radius: 6px;
+padding: 12px 30px;
+margin-top: 20px;
+cursor: pointer;
+font-size: 16px;
+transition: all 0.2s;
+width: 320px;
+max-width: 100%;
+box-sizing: border-box;
+}
+
+.popup-inner button:hover {
+background: #222;
+color: white;
+}
+
+.close-btn {
+position: absolute;
+top: 16px;
+right: 16px;
+width: 32px;
+height: 32px;
+background: rgba(0,0,0,0.05); /* very light background for visibility */
+border: none;
+outline: none;
+box-shadow: none;
+border-radius: 50%;
+font-size: 20px;
+font-weight: 400;
+line-height: 1;
+color: #333;
+cursor: pointer;
+padding: 0;
+z-index: 10;
+transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.close-btn:hover {
+background: rgba(0,0,0,0.12);
+transform: scale(1.1);
+}
+  
+
+.settings-icon-button {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: white;
+border: 2px solid black;
+border-radius: 50%;
+width: 44px;
+height: 44px;
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+z-index: 999;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+transition: all 0.2s;
+}
+
+.settings-icon-button:hover {
+transform: rotate(15deg);
+}
+
+.settings-icon-button svg {
+font-size: 20px;
+color: black;
+}

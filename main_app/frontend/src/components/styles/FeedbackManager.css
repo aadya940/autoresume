@@ -1,0 +1,103 @@
+/* Container */
+.feedback-manager {
+margin-top: 40px;
+max-width: 300px;
+min-width: 300px;
+margin-left: auto;
+margin-right: auto;
+padding: 20px;
+background: #ffffff;
+border-radius: 12px;
+
+/* medium black border */
+border: 2px solid black;
+
+transition: all 0.3s ease;
+}
+
+.feedback-manager .title {
+margin-bottom: 20px;
+font-size: 1.8rem;
+color: black;
+text-align: center;
+font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+/* Input Row */
+.feedback-input-row {
+flex-wrap: wrap;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.feedback-input-row textarea {
+width: 100%;
+min-height: 100px;
+padding: 12px 15px;
+font-size: 16px;
+border-radius: 8px;
+border: 2px solid black;
+resize: vertical;
+font-family: inherit;
+transition: border-color 0.3s ease;
+box-sizing: border-box; /* <-- THIS IS THE FIX */
+}
+  
+
+.feedback-input-row textarea:focus {
+outline: auto;
+border-color: black;
+}
+
+.feedback-input-row textarea,
+.feedback-input-row input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  background-color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+/* Clear Button */
+.feedback-input-row button {
+margin-top: 10px;
+padding: 10px 20px;
+font-size: 16px;
+border-radius: 8px;
+border: 2px solid black;
+background-color: #f8f9fa;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.feedback-input-row button:hover {
+background-color: #e2e6ea;
+}
+
+
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+.feedback-manager {
+    padding: 15px;
+}
+
+.feedback-manager .title {
+    font-size: 1.5rem;
+}
+
+.feedback-input-row textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+}
+
+.feedback-input-row button {
+    font-size: 14px;
+    padding: 8px 16px;
+}
+}

@@ -1,0 +1,15 @@
+button {
+    background-color: #4A90E2;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: rgb(74, 210, 241); /* slightly darker on hover */
+}

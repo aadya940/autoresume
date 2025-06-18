@@ -1,0 +1,48 @@
+.custom-button {
+padding: 10px 20px;
+border: none;
+border-radius: 12px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: background-color 0.3s ease, transform 0.2s ease;
+font-family: 'Inter', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+.custom-button:disabled {
+opacity: 0.6;
+cursor:not-allowed;
+background-color:maroon;
+}
+
+.custom-button:hover:not(:disabled) {
+transform: translateY(-2px);
+}
+
+.primary {
+background-color: #4A90E2;
+color: white;
+}
+
+.primary:hover {
+background-color: rgb(74, 210, 241);
+}
+
+.secondary {
+background-color: #4A90E2;
+color: white;
+}
+
+.secondary:hover {
+background-color: rgb(74, 210, 241);
+}
+
+.danger {
+background-color: #dc3545;
+color: white;
+}
+
+.danger:hover {
+background-color: #c82333;
+}
+
