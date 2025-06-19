@@ -85,14 +85,10 @@ def validate_assets_directory():
         raise FileNotFoundError("The 'assets' directory is missing.")
 
 
-async def append_and_compile(info, file_path, output_dir, lock_config=None, prompt=None):
+async def append_and_compile(info, file_path, output_dir, prompt=None):
     """Append new content to the LaTeX file and compile it. Handles status updates internally."""
 
     try:
-        # Mark status ready on success
-        if lock_config:
-            async with lock_config["status_lock"]:
-                lock_config["pdf_status"]["ready"] = False
 
         # Start validation early (cached after first call)
         validate_assets_directory()
@@ -114,12 +110,5 @@ async def append_and_compile(info, file_path, output_dir, lock_config=None, prom
         await asyncio.to_thread(write_file, file_path, cleaned_response)
         await asyncio.to_thread(compile_tex, output_dir, file_path)
 
-        # Mark status ready on success
-        if lock_config:
-            async with lock_config["status_lock"]:
-                lock_config["pdf_status"]["ready"] = True
-
     except Exception as e:
-        if lock_config:
-            async with lock_config["status_lock"]:
-                lock_config["pdf_status"]["ready"] = False
+        pass

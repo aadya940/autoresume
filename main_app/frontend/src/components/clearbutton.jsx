@@ -1,6 +1,8 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
-import './styles/ClearButton.css'
+import './styles/ClearButton.css';
+import toast from 'react-hot-toast';
+
 
 function ClearResumeButton() {
   const handleClick = async () => {
@@ -14,6 +16,10 @@ function ClearResumeButton() {
 
       if (!response.ok) {
         throw new Error('Failed to clear resume');
+      }
+
+      if (response.ok) {
+      toast('Resume reset succesfully.');
       }
 
     } catch (error) {

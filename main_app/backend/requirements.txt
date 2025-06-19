@@ -8,5 +8,4 @@ httpx
 python-dotenv
 crawl4ai
 pydantic
-
-# AIzaSyDtyopWRWXIYnYkBaOrlnb4t-h3RABeOds
+taskiq

@@ -11,12 +11,8 @@ from routes import (
     save_settings_router,
 )
 
-# Cleanups (Relase ProcessPool)
-from routes import lifespan as _lifespan
-
 from utils import initialise_pdf
 
-from task_queue import queue_worker
 
 from contextlib import asynccontextmanager
 import asyncio
@@ -24,18 +20,7 @@ import asyncio
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start background task
-    worker_task = asyncio.create_task(queue_worker())
-
-    async with _lifespan():
-        yield  # Let FastAPI run
-
-    # Optionally cancel background task on shutdown
-    worker_task.cancel()
-    try:
-        await worker_task
-    except asyncio.CancelledError:
-        pass
+    yield
 
 
 app = FastAPI(lifespan=lifespan)

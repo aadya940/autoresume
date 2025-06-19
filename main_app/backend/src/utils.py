@@ -1,5 +1,6 @@
 import os
 import glob
+import asyncio
 
 
 def clear_pdf():
@@ -14,6 +15,19 @@ def clear_pdf():
 def clear_link_cache():
     with open("assets/link_cache.txt", "w") as f:
         f.write("")
+
+
+# Extract job description in new process to avoid event loop issues
+def _extract_relevant_info(link, task=None):
+    if task is not None:
+        mode = "job_desc"
+    else:
+        mode = task
+
+    from ai.crawl import InfoExtractor
+
+    extractor = InfoExtractor(mode=mode)
+    return asyncio.run(extractor.get_extracted_text(link))
 
 
 def initialise_pdf():
