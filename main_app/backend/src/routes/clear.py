@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @clear_resume_router.post("/clear-resume")
 async def clear_resume():
     """Route to clear and reset the resume PDF using Dramatiq task queue."""
-    message = await clear_resume_task.kiq()  # Send task to Dramatiq
+    message = await clear_resume_task.kiq()  # Send task to taskiq
 
     update.active_tasks.append(message.task_id)
 

@@ -28,9 +28,6 @@ app = FastAPI(lifespan=lifespan)
 
 origins = [
     "*",
-    "http://localhost:5173",  # Your frontend's origin
-    "http://127.0.0.1:5173",  # In case you use this address
-    "http://localhost:8000",  # Optional: if you want to test from the backend itself
 ]
 
 app.add_middleware(
