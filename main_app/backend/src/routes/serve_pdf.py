@@ -6,7 +6,7 @@ import os
 serve_pdf_router = APIRouter()
 
 
-@serve_pdf_router.get("/serve_pdf")
+@serve_pdf_router.get("/api/serve_pdf")
 async def serve_pdf():
     filename: str = "user_file.pdf"
     assets_dir = os.path.join(os.path.dirname(__file__), "..", "assets")

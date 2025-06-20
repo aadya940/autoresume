@@ -32,7 +32,7 @@ update_resume_router = APIRouter()
 active_tasks = []
 
 
-@update_resume_router.post("/update-resume")
+@update_resume_router.post("/api/update-resume")
 async def update_resume(payload: LinkRequest):
     try:
         # Read existing cached links

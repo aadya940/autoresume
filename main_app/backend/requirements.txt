@@ -9,3 +9,4 @@ python-dotenv
 crawl4ai
 pydantic
 taskiq
+playwright

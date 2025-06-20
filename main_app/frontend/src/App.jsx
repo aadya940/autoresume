@@ -20,7 +20,7 @@ function App({ url }) {
   
     const timeout = setTimeout(() => {
       const interval = setInterval(async () => {
-        const res = await fetch("http://localhost:8000/pdf-status");
+        const res = await fetch("/api/pdf-status");
         if (!res.ok) return;
         const { ready } = await res.json();
         if (ready) {
@@ -43,7 +43,7 @@ function App({ url }) {
 
     setGenerating(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/update-resume', {
+      const response = await fetch('/api/update-resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -72,7 +72,7 @@ function App({ url }) {
     <div className="app-container">
       <Toaster toastOptions={{ style: { backgroundColor: 'rgba(0, 255, 0, 0.5)' } }} />
       <div className="top-right-container">
-        <SettingsPopup apiUrl="http://127.0.0.1:8000/save-settings" />
+        <SettingsPopup apiUrl="/api/save-settings" />
       </div>
       <div className="header">
         <div className="logo-title">

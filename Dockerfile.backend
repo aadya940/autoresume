@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install LaTeX for the `pdflatex` commands.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    texlive-latex-base \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
+    texlive-xetex \
+    texlive-luatex \
+    ghostscript \
+    poppler-utils \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY main_app/backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN playwright install --with-deps
+
+# Copy backend code
+COPY main_app/backend/ .
+
+# Set working directory to where main.py is
+WORKDIR /app/src
+
+EXPOSE 8000
+CMD ["python", "main.py"]

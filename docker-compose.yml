@@ -1,0 +1,25 @@
+services:
+  backend:
+      build:
+        context: .
+        dockerfile: Dockerfile.backend
+      ports:
+        - "8000:8000"
+      working_dir: /app/src
+      volumes:
+        - ./main_app/backend:/app
+      command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+      env_file:
+        - ./main_app/backend/src/.env
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    working_dir: /app
+    volumes:
+      - ./main_app/frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host"]

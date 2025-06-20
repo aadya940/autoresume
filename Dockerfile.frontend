@@ -1,0 +1,13 @@
+FROM node:20
+
+WORKDIR /app
+
+# Clean install without lock file to avoid Rollup optional dep issue
+COPY main_app/frontend/package*.json ./
+RUN rm -rf node_modules && rm -f package-lock.json
+RUN npm install --legacy-peer-deps
+
+COPY main_app/frontend ./
+
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host"]

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 polling_router = APIRouter()
 
 
-@polling_router.get("/pdf-status")
+@polling_router.get("/api/pdf-status")
 async def get_pdf_status():
     """Check if all active tasks are completed."""
     try:

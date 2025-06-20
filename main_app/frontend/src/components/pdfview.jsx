@@ -21,7 +21,7 @@ export function MyPdfViewer({ pdfUrl }) {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const res = await fetch("http://localhost:8000/pdf-status");
+      const res = await fetch("/api/pdf-status");
       if (!res.ok) throw new Error("Server Error!");
       const { ready } = await res.json();
 

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 function ClearResumeButton() {
   const handleClick = async () => {
     try {
-      const response = await fetch('http://localhost:8000/clear-resume', {
+      const response = await fetch('/api/clear-resume', {
         method: 'POST', // Use POST if your backend expects POST
         headers: {
           'Content-Type': 'application/json',

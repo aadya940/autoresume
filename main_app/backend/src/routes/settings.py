@@ -11,7 +11,7 @@ class SettingsRequest(BaseModel):
     email: str
 
 
-@save_settings_router.post("/save-settings")
+@save_settings_router.post("/api/save-settings")
 async def save_settings(settings: SettingsRequest):
     google_api_key = settings.google_api_key
     email = settings.email
