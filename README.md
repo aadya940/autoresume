@@ -31,8 +31,8 @@
 
 1. Clone the repository:
    ```bash
-   git clone <your-repo-url>
-   cd app_oss
+   git clone https://github.com/aadya940/autoresume.git
+   cd autoresume
    ```
 2. Build and start the app:
    ```bash
