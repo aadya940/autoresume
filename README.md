@@ -5,7 +5,7 @@
 <h1 align="center">autoResume</h1>
 
 <p align="center">
-  <b>AI-powered resume generation, editing, and job optimization—just paste your links and let AI do the rest!</b>
+  <b>AI-powered resume generation, editing, and job optimization, just paste your links and let AI do the rest!</b>
 </p>
 
 ---
@@ -47,9 +47,10 @@
 ## Usage
 
 1. Open autoResume in your browser.
-2. Paste links to your professional information (e.g., LinkedIn, portfolio, etc.).
-3. Optionally, add feedback or a job posting link for further customization.
-4. Click <b>Generate Resume</b> and let the AI do the rest!
+2. Click on the :gear: icon, paste in your [GOOGLE API KEY](https://aistudio.google.com/) and your Email. 
+3. Paste links to your professional information (e.g., LinkedIn, portfolio, etc.).
+4. Optionally, add feedback or a job posting link for further customization.
+5. Click <b>Generate Resume</b> and let the AI do the rest!
 
 ---
 
