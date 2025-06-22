@@ -135,17 +135,20 @@ def update_resume_with_tex(tex_content):
     """Update resume with manually edited LaTeX content."""
     try:
         logger.info("Updating resume with manual LaTeX edits")
-        
+
         # Write the new LaTeX content to the file
         with open("assets/user_file.tex", "w", encoding="utf-8") as f:
             f.write(tex_content)
-        
+
         # Compile the LaTeX to PDF
         compile_tex("assets", "assets/user_file.tex")
-        
+
         logger.info("Resume updated with manual LaTeX edits")
-        return {"status": "completed", "message": "Resume updated with manual LaTeX edits"}
-        
+        return {
+            "status": "completed",
+            "message": "Resume updated with manual LaTeX edits",
+        }
+
     except Exception as e:
         logger.error(f"Error in update_resume_with_tex: {str(e)}")
         raise

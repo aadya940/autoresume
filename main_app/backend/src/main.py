@@ -15,7 +15,6 @@ from utils import initialise_pdf
 
 
 from contextlib import asynccontextmanager
-import asyncio
 
 
 @asynccontextmanager

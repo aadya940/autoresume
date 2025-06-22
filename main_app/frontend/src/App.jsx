@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MyPdfViewer } from './components/pdfview';
 import Button from './components/button';
 import LinkManager from './components/LinkManager';
@@ -15,49 +15,67 @@ function App({ url }) {
   const [generating, setGenerating] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [jobLink, setJobLink] = useState('');
-  const [code, setCode] = useState("");
-  const [isPdfView, setIsPdfView] = useState(false); // <-- Add this
+  const [code, setCode] = useState('');
+  const [isPdfView, setIsPdfView] = useState(false);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const [pdfUrl, setPdfUrl] = useState(() => {
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}v=${Date.now()}`;
+  });
+  const lastReadyRef = useRef(false);
+
 
   useEffect(() => {
-    if (!generating) return;
-  
-    const timeout = setTimeout(() => {
-      const interval = setInterval(async () => {
-        const res = await fetch("/api/pdf-status");
-        if (!res.ok) return;
-        const { ready } = await res.json();
-        if (ready) {
-          setGenerating(false);
-          clearInterval(interval);
-          toast('Your resume was updated.');
-        }
-      }, 1000);
-  
-      return () => clearInterval(interval);
-    }, 500); // Wait 500ms before polling
-  
-    return () => clearTimeout(timeout);
-  }, [generating]);
+    const interval = setInterval(async () => {
+      const res = await fetch("/api/pdf-status");
+      if (!res.ok) {
+        console.error("Error checking status");
+        return;
+      }
+      const { ready } = await res.json();
 
+      if (ready && !lastReadyRef.current) {
+        // Transition from false -> true
+        const newUrl = (() => {
+          const separator = url.includes("?") ? "&" : "?";
+          return `${url}${separator}v=${Date.now()}`;
+        })();
+        setPdfUrl(newUrl);
+        setRefreshCount((count) => count + 1);
+        toast("Your resume was updated.");
+      }
+
+      lastReadyRef.current = ready;
+
+      // If generating, stop it when ready
+      if (generating && ready) {
+        setGenerating(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [url, generating]);
+
+  // handleGenerate remains the same
   const handleGenerate = async () => {
     if (generating) return;
     setGenerating(true);
     try {
-      const response = await fetch('/api/update-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          links: links,
-          feedback: feedback,
+      const response = await fetch("/api/update-resume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          links,
+          feedback,
           joblink: jobLink,
           tex_content: code,
         }),
       });
-      if (!response.ok) throw new Error('Failed to generate resume');
-      toast('Your resume is being updated. This may take a while ...');
+      if (!response.ok) throw new Error("Failed to generate resume");
+      toast("Your resume is being updated. This may take a while ...");
     } catch (err) {
-      console.error('Error:', err);
-      toast('There was an error. Please delete and regenerate the Resume!');
+      console.error("Error:", err);
+      toast("There was an error. Please delete and regenerate the Resume!");
       setGenerating(false);
     }
   };
@@ -83,7 +101,7 @@ function App({ url }) {
           rightLabel="TeX Editor"
         />
         
-        {isPdfView ? <LatexCodeEditor code={code} setCode={setCode} /> : <MyPdfViewer pdfUrl={url} />}
+        {isPdfView ? <LatexCodeEditor code={code} setCode={setCode} refreshKey={refreshCount} /> : <MyPdfViewer pdfUrl={url} onReload={() => setRefreshCount((count) => count + 1)}  />}
 
         <div className="right-panel">
           <Button onClick={handleGenerate} disabled={generating}>
