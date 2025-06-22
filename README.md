@@ -25,7 +25,8 @@
 ## Getting Started
 
 ### Prerequisites
-- [Docker](https://www.docker.com/get-started) & [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ### Setup
 
@@ -39,9 +40,7 @@
    docker-compose up --build
    ```
 3. Access the apps:
-   - Frontend: [http://localhost:5173](http://localhost:5173)
-   - Backend: [http://localhost:8000](http://localhost:8000)
-
+   [http://localhost:5173](http://localhost:5173)
 ---
 
 ## Usage
