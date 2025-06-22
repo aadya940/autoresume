@@ -17,7 +17,7 @@ from ai.prompts import (
     build_job_optimize_prompt,
 )
 from ai import append_and_compile
-from ai.utils import read_file
+from ai.utils import read_file, compile_tex
 from utils import initialise_pdf, clear_pdf, clear_link_cache, _extract_relevant_info
 
 logger = logging.getLogger(__name__)
@@ -127,6 +127,27 @@ def optimize_resume_for_job_task(job_link):
 
     except Exception as e:
         logger.error(f"Error in optimize_resume_for_job_task: {str(e)}")
+        raise
+
+
+@broker.task
+def update_resume_with_tex(tex_content):
+    """Update resume with manually edited LaTeX content."""
+    try:
+        logger.info("Updating resume with manual LaTeX edits")
+        
+        # Write the new LaTeX content to the file
+        with open("assets/user_file.tex", "w", encoding="utf-8") as f:
+            f.write(tex_content)
+        
+        # Compile the LaTeX to PDF
+        compile_tex("assets", "assets/user_file.tex")
+        
+        logger.info("Resume updated with manual LaTeX edits")
+        return {"status": "completed", "message": "Resume updated with manual LaTeX edits"}
+        
+    except Exception as e:
+        logger.error(f"Error in update_resume_with_tex: {str(e)}")
         raise
 
 

@@ -1,0 +1,46 @@
+/* Main container styles for SwitchWrapper */
+label {
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;           /* Relative font size */
+font-family: Arial, Helvetica, sans-serif;
+gap: 0.5em;                /* Responsive spacing between labels and switch */
+padding: 0.25em 0.5em;
+cursor: pointer;
+}
+
+/* Left and Right Labels */
+label span {
+user-select: none;
+color: #333;
+font-weight: 500;
+line-height: 1.5;
+}
+
+/* Switch Styles */
+.react-switch {
+display: flex;
+align-items: center;
+}
+
+/* Hover Effect for Switch */
+.react-switch:hover {
+filter: brightness(1.1);
+transition: filter 0.2s ease;
+}
+
+/* Responsive behavior (optional) */
+@media (max-width: 600px) {
+label {
+    font-size: 0.9rem;
+    gap: 0.4em;
+}
+}
+
+@media (min-width: 1024px) {
+label {
+    font-size: 1.1rem;
+    gap: 0.6em;
+}
+}

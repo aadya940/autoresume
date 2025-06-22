@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { MyPdfViewer } from './components/pdfview';
 import Button from './components/button';
 import LinkManager from './components/LinkManager';
+import LatexCodeEditor from './components/codeEditor';
+import SwitchWrapper from './components/toggleSwitch';
 import FeedbackManager from './components/feedback';
 import ClearResumeButton from './components/clearbutton';
 import SettingsPopup from './components/settings';
@@ -13,8 +15,9 @@ function App({ url }) {
   const [generating, setGenerating] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [jobLink, setJobLink] = useState('');
+  const [code, setCode] = useState("");
+  const [isPdfView, setIsPdfView] = useState(false); // <-- Add this
 
-  // Poll pdf-status when generating for Button Color.
   useEffect(() => {
     if (!generating) return;
   
@@ -34,37 +37,28 @@ function App({ url }) {
     }, 500); // Wait 500ms before polling
   
     return () => clearTimeout(timeout);
-  }, [generating]);  
-
-
+  }, [generating]);
 
   const handleGenerate = async () => {
-    if (generating) return;  // Prevent double clicks
-
+    if (generating) return;
     setGenerating(true);
     try {
       const response = await fetch('/api/update-resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          'links': links,
-          'feedback': feedback,
-          'joblink': jobLink,
-         }),
+          links: links,
+          feedback: feedback,
+          joblink: jobLink,
+          tex_content: code,
+        }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate resume');
-      }
-
+      if (!response.ok) throw new Error('Failed to generate resume');
       toast('Your resume is being updated. This may take a while ...');
-
-      // Don't setGenerating(false) here!
-      // Wait for polling to detect ready
     } catch (err) {
       console.error('Error:', err);
       toast('There was an error. Please delete and regenerate the Resume!');
-      setGenerating(false); // Only set to false on error
+      setGenerating(false);
     }
   };
 
@@ -81,21 +75,31 @@ function App({ url }) {
         </div>
         <p>Copy pasting public links is all it takes to get a resume. Let AI handle the rest.</p>
       </div>
-
       <div className="content">
-        <MyPdfViewer pdfUrl={url} />
+        <SwitchWrapper
+          isOn={isPdfView}
+          handleToggle={() => setIsPdfView(!isPdfView)}
+          leftLabel="PDF Viewer"
+          rightLabel="TeX Editor"
+        />
+        
+        {isPdfView ? <LatexCodeEditor code={code} setCode={setCode} /> : <MyPdfViewer pdfUrl={url} />}
+
         <div className="right-panel">
-        <Button onClick={handleGenerate} disabled={generating}>
-          {generating ? 'Generating...' : 'Generate Resume'}
-        </Button>
+          <Button onClick={handleGenerate} disabled={generating}>
+            {generating ? 'Generating...' : 'Generate Resume'}
+          </Button>
+   
           <ClearResumeButton />
           <LinkManager links={links} setLinks={setLinks} />
+   
           <FeedbackManager 
-          feedback={feedback} 
-          setFeedback={setFeedback} 
-          jobLink={jobLink}             
-          setJobLink={setJobLink}        
+            feedback={feedback} 
+            setFeedback={setFeedback} 
+            jobLink={jobLink}             
+            setJobLink={setJobLink}        
           />
+   
         </div>
       </div>
     </div>

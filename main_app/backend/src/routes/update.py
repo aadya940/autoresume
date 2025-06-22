@@ -13,6 +13,7 @@ from task_queue import (
     update_resume_with_links_task,
     update_resume_with_feedback_task,
     optimize_resume_for_job_task,
+    update_resume_with_tex,
 )
 
 load_dotenv()
@@ -24,6 +25,7 @@ class LinkRequest(BaseModel):
     links: List[str]
     feedback: Optional[str] = ""
     joblink: Optional[str] = ""
+    tex_content: Optional[str] = ""
 
 
 update_resume_router = APIRouter()
@@ -48,6 +50,13 @@ async def update_resume(payload: LinkRequest):
         job_link = payload.joblink
 
         logger.info(f"Links Received: {links}")
+
+        _tex_content = payload.tex_content
+
+        if _tex_content:
+            message = await update_resume_with_tex.kiq(_tex_content)
+            active_tasks.append(message.task_id)
+            logger.info(f"Submitted tex task: {message}")
 
         # Submit tasks to taskiq
         if len(links) > 0:

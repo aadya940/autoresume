@@ -6,7 +6,7 @@ import App from './App.jsx';
 function Main() {
   return (
     <StrictMode>
-      <App url="/api/serve_pdf" />
+      <App url="/api/serve_pdf?file_type=pdf" />
     </StrictMode>
   );
 }

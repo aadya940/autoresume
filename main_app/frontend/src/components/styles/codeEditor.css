@@ -1,0 +1,37 @@
+/* Main wrapper for the editor */
+.code-editor-container {
+display: flex;
+flex-direction: column;
+flex: 1;
+
+/* Let it take all available space */
+height: 100%;
+max-height: 100%;
+
+/* Nice rounded corners and clean borders */
+border-radius: 0.5rem;
+overflow: hidden;
+
+/* Subtle border for separation */
+border: 1px solid #ccc;
+
+/* Ensure box-sizing is respected */
+box-sizing: border-box;
+}
+
+/* Target the actual <textarea> inside the editor */
+.code-editor-container textarea {
+flex: 1;
+width: 100% !important;
+height: 100% !important;
+
+font-size: 1rem;
+line-height: 1.5;
+resize: none;
+
+/* Matches viewer behavior */
+box-sizing: border-box;
+
+/* Enables internal scroll if needed */
+overflow: auto;
+}
