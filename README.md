@@ -17,6 +17,7 @@
 ## Features
 
 - <b>Automatic Resume Generation:</b> Paste your links, get a polished PDF resume instantly.
+- <b>Embedded Code Editor:<b> Manual creation of resumes supported.
 - <b>AI-Powered Editing:</b> Share feedback or new links, and your resume updates automatically.
 - <b>Job Optimization:</b> Paste a job posting link to tailor your resume for specific roles.
 - <b>LaTeX Friendly:</b> All resumes are generated using LaTeX for professional quality.
