@@ -10,6 +10,10 @@
 
 ---
 
+### How to use this?
+
+[Medium Blog Link](https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1)
+
 ## Features
 
 - <b>Automatic Resume Generation:</b> Paste your links, get a polished PDF resume instantly.
