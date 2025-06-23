@@ -52,7 +52,7 @@
 
 1. Open autoResume in your browser.
 2. Click on the :gear: icon, paste in your [GOOGLE API KEY](https://aistudio.google.com/) and your Email. 
-3. Paste links to your professional information (e.g., LinkedIn, portfolio, etc.).
+3. Paste links to your professional information (e.g., Github, Personal Website, etc.).
 4. Optionally, add feedback or a job posting link for further customization.
 5. Click <b>Generate Resume</b> and let the AI do the rest!
 
