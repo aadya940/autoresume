@@ -3,7 +3,7 @@ import Collapsible from 'react-collapsible';
 import Button from './button';
 import './styles/LinkManager.css';
 
-function LinkManager({ links, setLinks }) {  // ✅ take from parent
+function LinkManager({ links, setLinks }) {  
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function LinkManager({ links, setLinks }) {  // ✅ take from parent
       if (storedLinks) {
         const parsedLinks = JSON.parse(storedLinks);
         if (Array.isArray(parsedLinks)) {
-          setLinks(parsedLinks);   // ✅ update parent's links state
+          setLinks(parsedLinks);   
         }
       }
     } catch (err) {
