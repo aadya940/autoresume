@@ -23,7 +23,7 @@
 - <b>LaTeX Friendly:</b> All resumes are generated using LaTeX for professional quality.
 - <b>Instant PDF Preview:</b> View your resume as a PDF in real time.
 - <b>Easy Reset:</b> Clear and regenerate your resume with a single click.
-- <b>Runs Locally:</b> No external dependencies—just Docker.
+- <b>Runs Locally:</b> No external dependencies, just Docker.
 
 ---
 
