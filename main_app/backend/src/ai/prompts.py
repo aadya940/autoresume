@@ -4,6 +4,8 @@
 def build_generic_prompt(info, curr_code):
     """Prompt not tied to any particular link."""
 
+    """Resume tips taken from: https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/#tips"""
+
     prompt = f"""
     You are an AI assistant specialized in generating LaTeX resumes.
 
@@ -20,6 +22,22 @@ def build_generic_prompt(info, curr_code):
     - Ensure the output is valid, standalone, and compilable LaTeX code.
     - Avoid premature pagebreaks and use a latex page efficiently and in a clean way.
     - Return only the updated LaTeX code — no explanations or extra text.
+
+    Resume language should be:
+    - Specific rather than general
+    - Active rather than passive
+    - Written to express not impress
+    - Articulate rather than “flowery”
+    - Fact-based (quantify and qualify)
+    - Written for people who scan quickly
+
+    Resume writing DOs:
+    - Be consistent in format and content
+    - Make it easy to read and follow, balancing white space
+    - Use consistent spacing, underlining, italics, bold, and capitalization for emphasis
+    - List headings (such as Experience) in order of importance
+    - Within headings, list information in reverse chronological order (most recent first)
+    - Avoid information gaps such as a missing summer
 
     ### Additional Information:
     {info}
@@ -46,18 +64,39 @@ def build_editing_prompt(info, curr_code):
     - Avoid premature pagebreaks and use a latex page efficiently and in a clean way.
     - Return only the updated LaTeX code — no explanations or extra text.
 
+    Resume language should be:
+    - Specific rather than general
+    - Active rather than passive
+    - Written to express not impress
+    - Articulate rather than “flowery”
+    - Fact-based (quantify and qualify)
+    - Written for people who scan quickly
+
+    Resume writing DOs:
+    - Be consistent in format and content
+    - Make it easy to read and follow, balancing white space
+    - Use consistent spacing, underlining, italics, bold, and capitalization for emphasis
+    - List headings (such as Experience) in order of importance
+    - Within headings, list information in reverse chronological order (most recent first)
+    - Avoid information gaps such as a missing summer
+
+
     ### Additional Information:
     {info}
 
-    ### Current LaTeX Resume:
+
+    ### Current LaTeX Resume Code:
     {curr_code}
     """
     return prompt
 
 
 def build_job_optimize_prompt(job_description, curr_code):
+    """ Tips taken from:
+        https://www.careereducation.columbia.edu/resources/optimizing-your-resume-applicant-tracking-systems
+    """
     prompt = f"""
-    You are an AI assistant specialized in generating LaTeX resumes.
+    You are an AI assistant specialized in generating LaTeX resume code.
 
     Task:
     Make changes to the LaTeX resume provided below to optimize the given resume
@@ -72,6 +111,15 @@ def build_job_optimize_prompt(job_description, curr_code):
     - Ensure the output is valid, standalone, and compilable LaTeX code.
     - Avoid premature pagebreaks and use a latex page efficiently and in a clean way.
     - Return only the updated LaTeX code — no explanations or extra text.
+
+    Some tips:
+    - Use common names for your section headers (Education, Work Experience, Leadership, Skills).
+    - Use keywords and exact phrases from the job description throughout your resume and online application. 
+    Keywords are graded both by how often they appear and the extent to which they get used in context. 
+    - Do not include any false information. Your sample space is what is given in the Current LaTeX Resume.
+    - A summary statement utilizing keywords can be helpful.
+    - Include dates wherever possible.
+
 
     ### Job Description:
     {job_description}
