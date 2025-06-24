@@ -144,3 +144,15 @@
   outline: auto;
   outline-style:groove;
 }
+
+/* Top right nav-bar */
+.top-right-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes them to opposite ends */
+  padding: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0; /* makes it stretch across the top if needed */
+}

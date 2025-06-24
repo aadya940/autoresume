@@ -8,7 +8,7 @@ const SettingsPopup = ({ apiUrl }) => {
   const [email, setEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Check if user is logged in (simplified for demo)
+  // Check if user is logged in.
   useEffect(() => {
     const storedLogin = localStorage.getItem('isLoggedIn');
     setIsLoggedIn(storedLogin === 'true');

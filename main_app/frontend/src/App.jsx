@@ -84,14 +84,22 @@ function App({ url }) {
     <div className="app-container">
       <Toaster toastOptions={{ style: { backgroundColor: 'rgba(0, 255, 0, 0.5)' } }} />
       <div className="top-right-container">
-        <SettingsPopup apiUrl="/api/save-settings" />
+        <a
+          href="https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+        <Button>How to Use autoResume?</Button>
+      </a>
+      <SettingsPopup apiUrl="/api/save-settings" />
       </div>
+
       <div className="header">
         <div className="logo-title">
           <img src="/autoresume-logo.png" alt="Logo" className="logo" />
           <h1>autoResume</h1>
         </div>
-        <p>Copy pasting public links is all it takes to get a resume. Let AI handle the rest.</p>
+        <p>Open Source Resume Builder & Latex Code Editor with AI Capabilities.</p>
       </div>
       <div className="content">
         <SwitchWrapper

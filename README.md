@@ -5,20 +5,25 @@
 <h1 align="center">autoResume</h1>
 
 <p align="center">
-  <b>AI-powered resume generation, editing, and job optimization, just paste your links and let AI do the rest!</b>
+  <b>Open‑source resume builder, paste your links, edit manually, and let AI lend a hand with polishing, updating, and tailoring your resume.</b>
 </p>
 
 ---
 
+### How to use this?
+
+[Medium Blog Link](https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1)
+
 ## Features
 
-- <b>Automatic Resume Generation:</b> Paste your links, get a polished PDF resume instantly.
-- <b>AI-Powered Editing:</b> Share feedback or new links, and your resume updates automatically.
-- <b>Job Optimization:</b> Paste a job posting link to tailor your resume for specific roles.
-- <b>LaTeX Friendly:</b> All resumes are generated using LaTeX for professional quality.
-- <b>Instant PDF Preview:</b> View your resume as a PDF in real time.
-- <b>Easy Reset:</b> Clear and regenerate your resume with a single click.
-- <b>Runs Locally:</b> No external dependencies—just Docker.
+- <b>Easy Link Import:</b> Paste links from websites, and quickly build a PDF resume.
+- <b>Manual Editor Included:</b> Fine‑tune or build your resume from scratch with an embedded code editor.
+- <b>Smart Suggestions:</b>  Share feedback or new links, and smartedits will help refine and update your resume.
+- <b>Tailored for Jobs:</b> Paste a job description, and get recommendations for aligning your resume.
+- <b>LaTeX Quality:</b> All resumes are generated using LaTeX for a clean, professional layout.
+- <b>Instant Preview:</b> See your resume as a PDF in real time.
+- <b>Easy Reset:</b> Clear and restart your resume in a click.
+- <b>Local:</b> Runs fully on your machine using Docker.
 
 ---
 
@@ -47,7 +52,7 @@
 
 1. Open autoResume in your browser.
 2. Click on the :gear: icon, paste in your [GOOGLE API KEY](https://aistudio.google.com/) and your Email. 
-3. Paste links to your professional information (e.g., LinkedIn, portfolio, etc.).
+3. Paste links to your professional information (e.g., Github, Personal Website, etc.).
 4. Optionally, add feedback or a job posting link for further customization.
 5. Click <b>Generate Resume</b> and let the AI do the rest!
 
