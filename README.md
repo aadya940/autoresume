@@ -16,14 +16,14 @@
 
 ## Features
 
-- <b>Automatic Resume Generation:</b> Paste your links, get a polished PDF resume instantly.
-- <b>Embedded Code Editor:</b> Manual creation of resumes supported.
-- <b>AI-Powered Editing:</b> Share feedback or new links, and your resume updates automatically.
-- <b>Job Optimization:</b> Paste a job posting link to tailor your resume for specific roles.
-- <b>LaTeX Friendly:</b> All resumes are generated using LaTeX for professional quality.
-- <b>Instant PDF Preview:</b> View your resume as a PDF in real time.
-- <b>Easy Reset:</b> Clear and regenerate your resume with a single click.
-- <b>Runs Locally:</b> No external dependencies, just Docker.
+- <b>Easy Link Import:</b> Paste links from websites, and quickly build a PDF resume.
+- <b>Manual Editor Included:</b> Fine‑tune or build your resume from scratch with an embedded code editor.
+- <b>Smart Suggestions:</b>  Share feedback or new links, and smartedits will help refine and update your resume.
+- <b>Tailored for Jobs:</b> Paste a job description, and get recommendations for aligning your resume.
+- <b>LaTeX Quality:</b> All resumes are generated using LaTeX for a clean, professional layout.
+- <b>Instant Preview:</b> See your resume as a PDF in real time.
+- <b>Easy Reset:</b> Clear and restart your resume in a click.
+- <b>Local:</b> Runs fully on your machine using Docker.
 
 ---
 
