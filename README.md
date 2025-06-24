@@ -45,7 +45,8 @@
    docker-compose up --build
    ```
 3. Access the apps:
-   [http://localhost:5173](http://localhost:5173)
+   
+   [_http://localhost:5173)_](http://localhost:5173)
 ---
 
 ## Usage
