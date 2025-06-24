@@ -5,7 +5,7 @@
 <h1 align="center">autoResume</h1>
 
 <p align="center">
-  <b>AI-powered resume generation, editing, and job optimization, just paste your links and let AI do the rest!</b>
+  <b>Open‑source resume builder, paste your links, edit manually, and let AI lend a hand with polishing, updating, and tailoring your resume.</b>
 </p>
 
 ---
