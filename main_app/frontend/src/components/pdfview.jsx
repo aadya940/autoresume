@@ -10,6 +10,11 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 function buildUrl(baseUrl) {
+  if (!baseUrl) {
+    console.error("buildUrl called with undefined baseUrl");
+    return ""; 
+  }
+
   const separator = baseUrl.includes("?") ? "&" : "?";
   return `${baseUrl}${separator}v=${Date.now()}`;
 }
@@ -78,3 +83,6 @@ export function MyPdfViewer({ pdfUrl }) {
     </div>
   );
 }
+
+export default MyPdfViewer;
+export { buildUrl };
