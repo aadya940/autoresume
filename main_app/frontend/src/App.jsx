@@ -81,7 +81,7 @@ function App({ url }) {
           <img src="/autoresume-logo.png" alt="Logo" className="logo" />
           <h1>autoResume</h1>
         </div>
-        <p>Copy pasting public links is all it takes to get a resume. Let AI handle the rest.</p>
+        <p>Open Source Resume Builder & Latex Code Editor with AI Capabilities.</p>
       </div>
       <div className="content">
         <SwitchWrapper
