@@ -64,15 +64,29 @@ This project is licensed under the Apache 2.0 License.
 
 ## Contributing Guide
 
-Frontend:
-- Implement a component in the `components/` folder.
-- Add the component to the `App.jsx` file.
+### Frontend
+- Implement React components in the `frontend/src/components/` folder
+- Add styles in the `frontend/src/components/styles/` directory
+- Import and use your components in `frontend/src/App.jsx`
+- Follow the existing code style and component patterns
 
-Backend:
-- Implement a route in the `routes/` folder.
-- Add the route to the `main.py` file.
-- Implement the `AI` functionality in the `ai/` folder.
-- We use the `black` formatter to format the backend.
+### Backend
+- Implement API routes in the `backend/src/routes/` directory
+- Add AI functionality in the `backend/src/ai/` directory
+- We use the `black` code formatter for Python code
+- Keep route handlers clean and business logic separate
 
-Create a Pull Request and briefly describe what you have done and how.
-Looking forward to your contributions!
+### General Guidelines
+- Create a new branch for your feature/fix: `git checkout -b your-branch-name`
+- Write clear commit messages
+- Test your changes before submitting a PR
+
+### Submitting Changes
+1. Create a Pull Request
+2. In your PR description, include:
+   - What changes you made
+   - Why you made them
+   - Any relevant screenshots or test results
+   - Any breaking changes or migration steps needed
+
+We appreciate your contributions and will review your PR as soon as possible!
