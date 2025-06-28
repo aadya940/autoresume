@@ -42,10 +42,11 @@
    ```
 2. Build and start the app:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 3. Access the apps:
-   [http://localhost:5173](http://localhost:5173)
+   
+   [_http://localhost:5173_](http://localhost:5173)
 ---
 
 ## Usage
