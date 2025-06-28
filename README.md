@@ -75,7 +75,7 @@ This project is licensed under the Apache 2.0 License.
 - Implement API routes in the `backend/src/routes/` directory
 - Add AI functionality in the `backend/src/ai/` directory
 - We use the `black` code formatter for Python code
-- Keep route handlers clean and business logic separate
+- Keep route handlers clean and logic separate
 
 ### General Guidelines
 - Create a new branch for your feature/fix: `git checkout -b your-branch-name`
