@@ -92,8 +92,8 @@ def build_editing_prompt(info, curr_code):
 
 
 def build_job_optimize_prompt(job_description, curr_code):
-    """ Tips taken from:
-        https://www.careereducation.columbia.edu/resources/optimizing-your-resume-applicant-tracking-systems
+    """Tips taken from:
+    https://www.careereducation.columbia.edu/resources/optimizing-your-resume-applicant-tracking-systems
     """
     prompt = f"""
     You are an AI assistant specialized in generating LaTeX resume code.

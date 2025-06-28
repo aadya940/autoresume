@@ -51,7 +51,7 @@ def initialise_pdf():
         try:
             os.remove("assets/user_file.aux")
             os.remove("assets/user_file.log")
-        except FileNotFoundError:
+        except Exception as e:
             pass
 
 

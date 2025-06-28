@@ -23,6 +23,26 @@ function buildUrl(baseUrl) {
 export function MyPdfViewer({ pdfUrl }) {
   const [numPages, setNumPages] = useState(null);
   const [url, setUrl] = useState(buildUrl(pdfUrl));
+  const [lastReady, setLastReady] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await fetch("/api/pdf-status");
+      if (!res.ok) {
+        console.error("Error checking status");
+        return;
+      }
+      const { ready } = await res.json();
+
+      if (ready && !lastReady) {
+        // Status just switched from false -> true
+        setUrl(buildUrl(pdfUrl));
+      }
+      setLastReady(ready);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [lastReady, pdfUrl]);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
