@@ -62,3 +62,17 @@
 
 This project is licensed under the Apache 2.0 License.
 
+## Contributing Guide
+
+Frontend:
+- Implement a component in the `components/` folder.
+- Add the component to the `App.jsx` file.
+
+Backend:
+- Implement a route in the `routes/` folder.
+- Add the route to the `main.py` file.
+- Implement the `AI` functionality in the `ai/` folder.
+- We use the `black` formatter to format the backend.
+
+Create a Pull Request and briefly describe what you have done and how.
+Looking forward to your contributions!
