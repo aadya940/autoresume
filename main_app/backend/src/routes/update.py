@@ -1,4 +1,3 @@
-# update.py
 """Route to update the Resume using Dramatiq task queue."""
 
 from fastapi import APIRouter

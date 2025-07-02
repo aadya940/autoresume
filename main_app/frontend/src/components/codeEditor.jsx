@@ -3,8 +3,7 @@ import { Box, Spinner, Text } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
 import { startPolling } from '../services/pollingService';
 
-function LaTeXEditor({ endpoint = 'http://localhost:8000/api/serve_pdf?file_type=tex' }) {
-  const [code, setCode] = useState("");
+function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serve_pdf?file_type=tex' }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [isEditorReady, setIsEditorReady] = useState(false);

@@ -1,4 +1,5 @@
 import './App.css';
+
 import { Box, HStack, VStack, Text, Spacer, Button, Input } from '@chakra-ui/react';
 import HeaderBar from './components/headerBar';
 import StartEditingButton from './components/startEdit';
@@ -16,6 +17,7 @@ function App() {
   const [aiSuggestion, setAiSuggestion] = useState('');
   const [jobLink, setJobLink] = useState('');
   const [links, setLinks] = useState([]);
+  const [code, setCode] = useState("");
   
   // Load links from localStorage on initial render
   useEffect(() => {
@@ -29,10 +31,10 @@ function App() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleGenerateResume = async () => {
-    if (!links.length) {
+    if (!links.length && !jobLink && !aiSuggestion && code === '') {
       toaster.error({
         title: "Error",
-        description: "Please add at least one link",
+        description: "Please add some useful content.",
         duration: 3000,
         closable: true,
       });
@@ -47,11 +49,12 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
+
         body: JSON.stringify({
           links: links,
           feedback: aiSuggestion,
           joblink: jobLink,
-          tex_content: ''
+          tex_content: code || ''
         }),
       });
 
@@ -125,7 +128,7 @@ function App() {
                 </HStack>
 
                 <LinkManager links={links} setLinks={setLinks} />
-                {!isPdfMode ? <PdfViewer /> : <CodeEditor />}
+                {!isPdfMode ? <PdfViewer /> : <CodeEditor code={code} setCode={setCode} />}
                 
               </VStack>
             </Box>

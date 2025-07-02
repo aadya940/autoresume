@@ -1,4 +1,4 @@
-const POLLING_INTERVAL = 2000; // 2 second
+const POLLING_INTERVAL = 400; // 0.4 second polling since `manual editing` completes in `<1 second`.
 
 export const startPolling = (onStatusUpdate, onError) => {
   let isPolling = true;
