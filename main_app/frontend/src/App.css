@@ -1,0 +1,174 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Generate Resume Button Styles */
+.button-wrapper {
+  margin-top: 10px;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;  /* Side by side layout */
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  max-width: 1400px;  /* Adjust based on your needs */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.main-content {
+  flex: 1;  /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;  /* Adjust based on your needs */
+}
+
+.viewer-container {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.right-panel {
+  width: 300px;  /* Fixed width for the right panel */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 20px;  /* Stick to the top with some spacing */
+}
+
+.link-manager {
+  margin-top: 0; /* removes default spacing */
+}
+
+.link-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.link-input-row input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.link-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.link-list li {
+  margin-bottom: 6px;
+}
+
+.link-list a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link-list a:hover {
+  text-decoration: underline;
+}
+
+/* For the logo */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 7em;
+  height: auto;
+  object-fit: contain;
+  border: black;
+  outline: auto;
+  outline-style:groove;
+}
+
+/* Top right nav-bar */
+.top-right-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes them to opposite ends */
+  padding: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0; /* makes it stretch across the top if needed */
+}
+
+/* Add this to your CSS */
+.switch-wrapper {
+  width: 100%;
+  max-width: 800px;  /* Match with right-panel */
+  margin: 0 auto;    /* Center it */
+  padding: 0 20px;   /* Match padding with right-panel */
+}

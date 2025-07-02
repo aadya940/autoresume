@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-dotenv
+sqlalchemy
+google-adk
+google-generativeai
+httpx
+python-dotenv
+crawl4ai
+pydantic
+taskiq
+playwright
