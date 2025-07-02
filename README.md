@@ -67,9 +67,8 @@ This project is licensed under the Apache 2.0 License.
 
 ### Frontend
 - Implement React components in the `frontend/src/components/` folder
-- Add styles in the `frontend/src/components/styles/` directory
+- We use Chakra UI to implement components.
 - Import and use your components in `frontend/src/App.jsx`
-- Follow the existing code style and component patterns
 
 ### Backend
 - Implement API routes in the `backend/src/routes/` directory
