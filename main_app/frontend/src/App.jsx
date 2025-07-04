@@ -69,6 +69,9 @@ function App() {
         duration: 3000,
         closable: true,
       });
+
+      setAiSuggestion('');
+      setJobLink('');
       
     } catch (error) {
       console.error('Error generating resume:', error);

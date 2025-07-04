@@ -2,6 +2,8 @@ import os
 import glob
 import asyncio
 
+from template import basic_template
+
 
 def clear_pdf():
     files = glob.glob("assets/*")
@@ -33,14 +35,8 @@ def _extract_relevant_info(link, task=None):
 
 def initialise_pdf():
     if len(os.listdir("assets")) == 0:
-        content = r"""
-        \documentclass{article}
-        \begin{document}
-        \title{Resume}
-        \maketitle
-        Hello, this is my resume!
-        \end{document}
-        """
+        content = basic_template
+
         with open("assets/user_file.tex", "w") as f:
             f.write(content)
 

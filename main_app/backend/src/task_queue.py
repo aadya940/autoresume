@@ -1,4 +1,3 @@
-# task_queue.py
 """Simple task queue using Taskiq with in-memory broker - zero external setup needed."""
 
 from taskiq import InMemoryBroker

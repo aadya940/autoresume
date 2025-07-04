@@ -22,6 +22,9 @@ def build_generic_prompt(info, curr_code):
     - Ensure the output is valid, standalone, and compilable LaTeX code.
     - Avoid premature pagebreaks and use a latex page efficiently and in a clean way.
     - Return only the updated LaTeX code — no explanations or extra text.
+    - Maintain the existing formatting and structure of the resume.
+    - Add the new information in the relevant sections only.
+    - If some information doesn't match any section, create a new section.
 
     Resume language should be:
     - Specific rather than general
@@ -63,6 +66,7 @@ def build_editing_prompt(info, curr_code):
     - Ensure the output is valid, standalone, and compilable LaTeX code.
     - Avoid premature pagebreaks and use a latex page efficiently and in a clean way.
     - Return only the updated LaTeX code — no explanations or extra text.
+    - Maintain the existing formatting and structure of the resume.
 
     Resume language should be:
     - Specific rather than general
