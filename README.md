@@ -1,3 +1,34 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="right">
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=en">English</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=zh-CN">简体中文</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=zh-TW">繁體中文</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=ja">日本語</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=ko">한국어</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=hi">हिन्दी</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=th">ไทย</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=fr">Français</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=de">Deutsch</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=es">Español</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=it">Itapano</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=ru">Русский</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=pt">Português</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=nl">Nederlands</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=pl">Polski</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=ar">العربية</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=fa">فارسی</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=tr">Türkçe</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=vi">Tiếng Việt</a></p>
+        <p><a href="https://openaitx.github.io/view.html?user=aadya940&project=autoresume&lang=id">Bahasa Indonesia</a></p>
+      </div>
+    </div>
+  </details>
+</div>
+
 <p align="center">
   <img src="main_app/frontend/public/autoresume-logo.png" alt="autoResume Logo" title="autoResume Logo" width="180"/>
 </p>
