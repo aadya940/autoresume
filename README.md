@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="main_app/frontend/public/autoresume-logo.png" alt="autoResume Logo" title="autoResume Logo"/>
+  <img src="main_app/frontend/public/autoresume-logo.png" alt="autoResume Logo" title="autoResume Logo" width="360" />
 </p>
 
 <h1 align="center">autoResume</h1>
