@@ -85,7 +85,7 @@ docker compose up --build
 - ✦ We use **Chakra UI** to implement components
 - ✦ Import and use your components in `frontend/src/App.jsx`
 
-### ⚡ Backend
+### Backend
 - ✦ Implement API routes in the `backend/src/routes/` directory
 - ✦ Add AI functionality in the `backend/src/ai/` directory
 - ✦ We use the `black` code formatter for Python code
@@ -104,7 +104,7 @@ docker compose up --build
 ### Submitting Changes
 
 <details>
-<summary><b>📝 Pull Request Checklist</b></summary>
+<summary><b> Pull Request Checklist</b></summary>
 
 #### **1.** Create a Pull Request
 
