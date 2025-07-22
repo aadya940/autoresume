@@ -1,6 +1,6 @@
 <div align="center">
   
-# 🚀 autoResume
+# autoResume
 
 <img src="main_app/frontend/public/autoresume-logo.png" alt="autoResume Logo" title="autoResume Logo" width="361" />
 
