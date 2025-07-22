@@ -80,28 +80,28 @@ docker compose up --build
 
 ## 🤝 Contributing Guide
 
-### 🎨 Frontend
-- 📁 Implement React components in the `frontend/src/components/` folder
-- 🎭 We use **Chakra UI** to implement components
-- 📦 Import and use your components in `frontend/src/App.jsx`
+### Frontend
+- ✦ Implement React components in the `frontend/src/components/` folder
+- ✦ We use **Chakra UI** to implement components
+- ✦ Import and use your components in `frontend/src/App.jsx`
 
 ### ⚡ Backend
-- 🛣️ Implement API routes in the `backend/src/routes/` directory
-- 🤖 Add AI functionality in the `backend/src/ai/` directory
-- 🖤 We use the `black` code formatter for Python code
-- 🧹 Keep route handlers clean and logic separate
+- ✦ Implement API routes in the `backend/src/routes/` directory
+- ✦ Add AI functionality in the `backend/src/ai/` directory
+- ✦ We use the `black` code formatter for Python code
+- ✦ Keep route handlers clean and logic separate
 
-### 📏 General Guidelines
+### General Guidelines
 
-> 🌿 **Branch Management**
+> ✦ **Branch Management**
 > ```bash
 > git checkout -b your-branch-name
 > ```
 
-- ✍️ Write clear commit messages
-- 🧪 Test your changes before submitting a PR
+- ✦ Write clear commit messages
+- ✦ Test your changes before submitting a PR
 
-### 📬 Submitting Changes
+### Submitting Changes
 
 <details>
 <summary><b>📝 Pull Request Checklist</b></summary>
@@ -110,10 +110,10 @@ docker compose up --build
 
 #### **2.** In your PR description, include:
 
-- ✅ **What changes you made**
-- 🎯 **Why you made them**
-- 📸 **Any relevant screenshots or test results**
-- ⚠️ **Any breaking changes or migration steps needed**
+- ✦ **What changes you made**
+- ✦ **Why you made them**
+- ✦ **Any relevant screenshots or test results**
+- ✦ **Any breaking changes or migration steps needed**
 
 </details>
 
@@ -121,7 +121,7 @@ docker compose up --build
 
 <div align="center">
 
-### 💝 We appreciate your contributions and will review your PR as soon as possible!
+### We appreciate your contributions and will review your PR as soon as possible!
 
 [![Contributors](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
