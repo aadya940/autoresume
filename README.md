@@ -10,7 +10,7 @@
 
 ---
 
-## 🤔 How to use this?
+## How to use this?
 
 📖 **[Medium Blog Link](https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1)**
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 🌟 Features
+## Features
 
 <div align="center">
   <img src="banner.png" alt="features" width="100%" />
