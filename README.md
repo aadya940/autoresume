@@ -14,7 +14,7 @@
 
 📖 **[Medium Blog Link](https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1)**
 
-> ⚠️ **Note:** The Blog is outdated with respect to the User Interface and Template used.
+>  **Note:** The Blog is outdated with respect to the User Interface and Template used.
 
 ---
 
@@ -32,8 +32,8 @@
 
 | Requirement | Link |
 |-------------|------|
-| 🐳 **Docker** | [Get Docker](https://www.docker.com/get-started) |
-| 🔧 **Docker Compose** | [Install Compose](https://docs.docker.com/compose/) |
+|  **Docker** | [Get Docker](https://www.docker.com/get-started) |
+|  **Docker Compose** | [Install Compose](https://docs.docker.com/compose/) |
 
 ### ⚙️ Setup
 
