@@ -81,15 +81,15 @@ docker compose up --build
 ## 🤝 Contributing Guide
 
 ### Frontend
- ✦ Implement React components in the `frontend/src/components/` folder
- ✦ We use **Chakra UI** to implement components
- ✦ Import and use your components in `frontend/src/App.jsx`
+ ✦ Implement React components in the `frontend/src/components/` folder <br />
+ ✦ We use **Chakra UI** to implement components <br />
+ ✦ Import and use your components in `frontend/src/App.jsx` <br />
 
 ### Backend
- ✦ Implement API routes in the `backend/src/routes/` directory
- ✦ Add AI functionality in the `backend/src/ai/` directory
- ✦ We use the `black` code formatter for Python code
- ✦ Keep route handlers clean and logic separate
+ ✦ Implement API routes in the `backend/src/routes/` directory <br />
+ ✦ Add AI functionality in the `backend/src/ai/` directory <br />
+ ✦ We use the `black` code formatter for Python code <br />
+ ✦ Keep route handlers clean and logic separate <br />
 
 ### General Guidelines
 
@@ -110,10 +110,10 @@ docker compose up --build
 
 #### **2.** In your PR description, include:
 
- ✦ **What changes you made**
- ✦ **Why you made them**
- ✦ **Any relevant screenshots or test results**
- ✦ **Any breaking changes or migration steps needed**
+ ✦ **What changes you made** <br />
+ ✦ **Why you made them** <br />
+ ✦ **Any relevant screenshots or test results** <br />
+ ✦ **Any breaking changes or migration steps needed** <br />
 
 </details>
 
