@@ -26,16 +26,16 @@
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-### 📋 Prerequisites
+### Prerequisites
 
 | Requirement | Link |
 |-------------|------|
 |  **Docker** | [Get Docker](https://www.docker.com/get-started) |
 |  **Docker Compose** | [Install Compose](https://docs.docker.com/compose/) |
 
-### ⚙️ Setup
+### Setup
 
 <details>
 <summary><b>🔽 Click to expand setup instructions</b></summary>
@@ -52,13 +52,13 @@ docker compose up --build
 ```
 
 #### **Step 3:** Access the apps
-🌐 **[http://localhost:5173](http://localhost:5173)**
+ **[http://localhost:5173](http://localhost:5173)**
 
 </details>
 
 ---
 
-## 🎯 Usage
+## Usage
 
 | Step | Action | Description |
 |------|--------|-------------|
@@ -70,15 +70,15 @@ docker compose up --build
 
 ---
 
-## 📄 License
+## License
 
 ```
-📝 This project is licensed under the Apache 2.0 License.
+ This project is licensed under the Apache 2.0 License.
 ```
 
 ---
 
-## 🤝 Contributing Guide
+## Contributing Guide
 
 ### Frontend
  ✦ Implement React components in the `frontend/src/components/` folder <br />
