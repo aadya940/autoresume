@@ -1,4 +1,4 @@
-"""Route to update the Resume using Dramatiq task queue."""
+"""Update endpoint with logging"""
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
@@ -47,37 +47,54 @@ async def update_resume(payload: LinkRequest):
         links = list(set(links_in_request) - set(curr_links))
         feedback = payload.feedback
         job_link = payload.joblink
-
-        logger.info(f"Links Received: {links}")
-
         _tex_content = payload.tex_content
+
+        logger.info(
+            f"Received request - Links: {len(links)}, Feedback: {bool(feedback)}, "
+            f"JobLink: {bool(job_link)}, TeX: {bool(_tex_content)}"
+        )
+
+        tasks_submitted = 0
 
         if _tex_content:
             message = await update_resume_with_tex.kiq(_tex_content)
             active_tasks.append(message.task_id)
-            logger.info(f"Submitted tex task: {message}")
+            logger.info(f"✓ Submitted tex task: {message.task_id}")
+            tasks_submitted += 1
 
-        # Submit tasks to taskiq
         if len(links) > 0:
             message = await update_resume_with_links_task.kiq(links)
             active_tasks.append(message.task_id)
-            logger.info(f"Submitted links task: {message}")
+            logger.info(f"✓ Submitted links task: {message.task_id}")
+            tasks_submitted += 1
 
         if len(feedback) > 0:
             message = await update_resume_with_feedback_task.kiq(feedback)
             active_tasks.append(message.task_id)
-            logger.info(f"Submitted feedback task: {message}")
+            logger.info(f"✓ Submitted feedback task: {message.task_id}")
+            tasks_submitted += 1
 
         if job_link and job_link.strip():
             message = await optimize_resume_for_job_task.kiq(job_link)
             active_tasks.append(message.task_id)
-            logger.info(f"Submitted job optimization task: {message}")
+            logger.info(f"✓ Submitted job task: {message.task_id}")
+            tasks_submitted += 1
+
+        logger.info(
+            f"Total tasks submitted: {tasks_submitted}, "
+            f"Total active: {len(active_tasks)}"
+        )
+        logger.info(f"Active task IDs: {active_tasks}")
 
         return JSONResponse(
-            content={"message": "Resume update tasks submitted to queue."},
+            content={
+                "message": "Resume update tasks submitted to queue.",
+                "tasks_submitted": tasks_submitted,
+                "active_count": len(active_tasks),
+            },
             status_code=202,
         )
 
     except Exception as e:
-        logger.error(f"Error in update_resume endpoint: {str(e)}")
+        logger.error(f"Error in update_resume endpoint: {str(e)}", exc_info=True)
         return JSONResponse(content={"error": str(e)}, status_code=500)

@@ -25,17 +25,16 @@ _runner_lock = asyncio.Lock()
 
 class LatexCoderAgent(LlmAgent):
     def __init__(self):
-        self._model_args = types.GenerateContentConfig(
-            thinking_config=types.ThinkingConfig(
-                thinking_budget=-1
-            )  # Enable dynamic thinking.
-        )
+        self._model_args = types.ThinkingConfig(
+            thinking_budget=-1
+        )  # Enable dynamic thinking.
+
         self._planner = BuiltInPlanner(thinking_config=self._model_args)
 
         super().__init__(
             name="latex_coder_agent",
             description="Updates the LaTeX code for a resume with additional information",
-            model="gemini-2.5-flash-lite-preview-06-17",
+            model="gemini-3-pro-preview",
             planner=self._planner,
         )
 

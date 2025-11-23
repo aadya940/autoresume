@@ -30,13 +30,12 @@ class InfoExtractor:
         self.browser_config = BrowserConfig(
             browser_type="chromium",
             headless=True,
-            # Add these for better performance
             viewport_width=1280,
             viewport_height=720,
         )
 
         self.llm_config = LLMConfig(
-            provider="gemini/gemini-2.0-flash", api_token=api_key
+            provider="gemini/gemini-2.5-flash-lite", api_token=api_key
         )
 
         self.extra_args = {"temperature": 0, "top_p": 0.9, "max_tokens": 2000}
