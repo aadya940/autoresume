@@ -18,7 +18,7 @@ function App() {
   const [jobLink, setJobLink] = useState('');
   const [links, setLinks] = useState([]);
   const [code, setCode] = useState("");
-  
+
   // Load links from localStorage on initial render
   useEffect(() => {
     const STORAGE_KEY = 'user_links';
@@ -27,7 +27,7 @@ function App() {
       setLinks(JSON.parse(savedLinks));
     }
   }, []);
-  
+
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleGenerateResume = async () => {
@@ -72,7 +72,7 @@ function App() {
 
       setAiSuggestion('');
       setJobLink('');
-      
+
     } catch (error) {
       console.error('Error generating resume:', error);
       toaster.error({
@@ -85,12 +85,12 @@ function App() {
       setIsGenerating(false);
     }
   }
-  
+
   return (
     <Box minH="100vh" width="100%" display="flex" flexDirection="column" alignItems="center">
       <Box width="100%" flex="1" display="flex" flexDirection="column" alignItems="center">
         {/* The heading Bar */}
-        <HeaderBar />
+        <HeaderBar onBack={() => window.location.href = '/'} />
 
         {/* The title slogan */}
         <Text
@@ -126,13 +126,13 @@ function App() {
                     </Text>
                   </Box>
                   <Box position="absolute" right="0">
-                    <ToggleSwitch isPdfMode={isPdfMode} setIsPdfMode={setIsPdfMode}/>
+                    <ToggleSwitch isPdfMode={isPdfMode} setIsPdfMode={setIsPdfMode} />
                   </Box>
                 </HStack>
 
                 <LinkManager links={links} setLinks={setLinks} />
                 {!isPdfMode ? <PdfViewer /> : <CodeEditor code={code} setCode={setCode} />}
-                
+
               </VStack>
             </Box>
 
@@ -145,10 +145,10 @@ function App() {
 
                 {/* Job specific rewrites */}
                 <Input placeholder="Paste a job link ..." onChange={(e) => setJobLink(e.target.value)} />
-                
+
                 <Spacer />
-                <Button 
-                  colorScheme="blue" 
+                <Button
+                  colorScheme="blue"
                   onClick={handleGenerateResume}
                   isLoading={isGenerating}
                   loadingText="Generating..."

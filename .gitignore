@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Project Specific
+main_app/backend/src/assets/
+main_app/backend/src/assets/user_file.pdf
+main_app/backend/src/assets/user_file.tex
+main_app/backend/src/assets/user_file.aux
+main_app/backend/src/assets/user_file.log
+main_app/backend/src/assets/link_cache.txt
+main_app/backend/src/assets/template_preference.txt
+
+# OS
+.DS_Store
+Thumbs.db

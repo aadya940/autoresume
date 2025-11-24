@@ -25,6 +25,7 @@ class LinkRequest(BaseModel):
     feedback: Optional[str] = ""
     joblink: Optional[str] = ""
     tex_content: Optional[str] = ""
+    template_id: Optional[str] = ""
 
 
 update_resume_router = APIRouter()
@@ -48,11 +49,17 @@ async def update_resume(payload: LinkRequest):
         feedback = payload.feedback
         job_link = payload.joblink
         _tex_content = payload.tex_content
+        template_id = payload.template_id
 
         logger.info(
             f"Received request - Links: {len(links)}, Feedback: {bool(feedback)}, "
-            f"JobLink: {bool(job_link)}, TeX: {bool(_tex_content)}"
+            f"JobLink: {bool(job_link)}, TeX: {bool(_tex_content)}, TemplateID: {template_id}"
         )
+
+        # Save template preference if provided
+        if template_id:
+            async with aiofiles.open("assets/template_preference.txt", "w") as f:
+                await f.write(template_id)
 
         tasks_submitted = 0
 

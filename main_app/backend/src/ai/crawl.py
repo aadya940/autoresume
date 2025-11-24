@@ -35,7 +35,7 @@ class InfoExtractor:
         )
 
         self.llm_config = LLMConfig(
-            provider="gemini/gemini-2.5-flash-lite", api_token=api_key
+            provider="gemini/gemini-3-pro-preview", api_token=api_key
         )
 
         self.extra_args = {"temperature": 0, "top_p": 0.9, "max_tokens": 2000}

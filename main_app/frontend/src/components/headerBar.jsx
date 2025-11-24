@@ -4,7 +4,7 @@ import { FaCog, FaTrash } from 'react-icons/fa';
 import { toaster } from './ui/toaster';
 import LoginPopup from './loginPopup';
 
-export default function HeaderBar() {
+export default function HeaderBar({ onBack }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const handleLoginClick = () => {
@@ -18,6 +18,7 @@ export default function HeaderBar() {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({}),
       });
 
       if (!response.ok) {
@@ -86,24 +87,29 @@ export default function HeaderBar() {
         zIndex={1000}
       >
         <Flex align="center">
+          {onBack && (
+            <Button variant="ghost" onClick={onBack} mr={4}>
+              ← Back
+            </Button>
+          )}
           <Image src="/autoresume-logo.png" alt="AutoResume Logo" height="50px" />
           <Text fontSize="2xl" fontWeight="bold">autoResume</Text>
           <Spacer />
 
-          <Button 
-            variant="ghost" 
-            colorScheme="gray" 
-            mr={3} 
+          <Button
+            variant="ghost"
+            colorScheme="gray"
+            mr={3}
             onClick={handleDeleteClick}
             aria-label="Settings"
           >
             <Icon as={FaTrash} boxSize={5} />
           </Button>
 
-          <Button 
-            variant="ghost" 
-            colorScheme="gray" 
-            mr={3} 
+          <Button
+            variant="ghost"
+            colorScheme="gray"
+            mr={3}
             onClick={handleLoginClick}
             aria-label="Settings"
           >

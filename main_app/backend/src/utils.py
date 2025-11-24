@@ -3,11 +3,16 @@ import glob
 import asyncio
 
 from template import basic_template
+from templates_data import templates
 
 
 def clear_pdf():
     files = glob.glob("assets/*")
     for file_path in files:
+        # Preserve template preference file
+        if "template_preference.txt" in file_path:
+            continue
+            
         try:
             os.remove(file_path)
         except Exception as e:
@@ -34,8 +39,18 @@ def _extract_relevant_info(link, task=None):
 
 
 def initialise_pdf():
-    if len(os.listdir("assets")) == 0:
+    if len(os.listdir("assets")) <= 1: # Allow for template_preference.txt
         content = basic_template
+        
+        # Check for template preference
+        try:
+            if os.path.exists("assets/template_preference.txt"):
+                with open("assets/template_preference.txt", "r") as f:
+                    template_id = f.read().strip()
+                    if template_id in templates:
+                        content = templates[template_id]
+        except Exception as e:
+            print(f"Error reading template preference: {e}")
 
         with open("assets/user_file.tex", "w") as f:
             f.write(content)
