@@ -2,8 +2,7 @@ import os
 import glob
 import asyncio
 
-from template import basic_template
-from templates_data import templates
+from templates_data import templates, basic_template
 
 
 def clear_pdf():
