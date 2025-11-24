@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
-import { startPolling } from '../services/pollingService';
+
 
 function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serve_pdf?file_type=tex' }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +12,7 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
 
   const fetchLaTeX = useCallback(async () => {
     if (!isMounted.current) return;
-    
+
     setIsLoading(true);
     setError('');
 
@@ -20,9 +20,9 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
       const response = await fetch(endpoint, { cache: 'no-store' });
       if (!response.ok) throw new Error('Failed to load LaTeX code');
       const data = await response.json();
-      
+
       if (!isMounted.current) return;
-      
+
       setCode(data.code);
       setIsLoading(false);
     } catch (err) {
@@ -36,35 +36,34 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
   useEffect(() => {
     isMounted.current = true;
     hasFetchedRef.current = false;
-    
-    const handleStatusUpdate = (isReady) => {
-      if (isMounted.current) {
-        setIsEditorReady(isReady);
-        
-        // Only fetch if editor is ready AND we haven't fetched yet
-        if (isReady && !hasFetchedRef.current) {
+
+    // Initialize SSE connection
+    const eventSource = new EventSource('http://localhost:8000/api/events');
+
+    eventSource.onmessage = (event) => {
+      if (!isMounted.current) return;
+
+      if (event.data === 'ready') {
+        setIsEditorReady(true);
+        if (!hasFetchedRef.current) {
           hasFetchedRef.current = true;
           fetchLaTeX();
         }
-        
-        // Reset the flag if editor becomes not ready (for future state changes)
-        if (!isReady) {
-          hasFetchedRef.current = false;
-        }
+      } else {
+        setIsEditorReady(false);
+        hasFetchedRef.current = false;
       }
     };
 
-    const handleError = (error) => {
+    eventSource.onerror = (err) => {
       if (isMounted.current) {
-        setError(`Error checking editor status: ${error.message}`);
+        console.error('SSE Error:', err);
       }
     };
-
-    const stopPolling = startPolling(handleStatusUpdate, handleError);
 
     return () => {
       isMounted.current = false;
-      stopPolling();
+      eventSource.close();
     };
   }, [fetchLaTeX]);
 

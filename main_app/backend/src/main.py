@@ -7,9 +7,10 @@ from routes import (
     serve_pdf_router,
     update_resume_router,
     clear_resume_router,
-    polling_router,
     save_settings_router,
 )
+from routes.sse import sse_router
+
 
 from utils import initialise_pdf
 
@@ -44,7 +45,7 @@ initialise_pdf()
 app.include_router(serve_pdf_router)
 app.include_router(update_resume_router)
 app.include_router(clear_resume_router)
-app.include_router(polling_router)
+app.include_router(sse_router)
 app.include_router(save_settings_router)
 
 if __name__ == "__main__":
