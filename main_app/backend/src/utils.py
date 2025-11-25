@@ -8,8 +8,8 @@ from templates_data import templates, basic_template
 def clear_pdf():
     files = glob.glob("assets/*")
     for file_path in files:
-        # Preserve template preference file
-        if "template_preference.txt" in file_path:
+        # Preserve template preference file and custom template
+        if "template_preference.txt" in file_path or "custom_template.tex" in file_path:
             continue
             
         try:
@@ -38,7 +38,7 @@ def _extract_relevant_info(link, task=None):
 
 
 def initialise_pdf():
-    if len(os.listdir("assets")) <= 1: # Allow for template_preference.txt
+    if len(os.listdir("assets")) <= 2: # Allow for template_preference.txt, custom_template.tex
         content = basic_template
         
         # Check for template preference
@@ -46,7 +46,12 @@ def initialise_pdf():
             if os.path.exists("assets/template_preference.txt"):
                 with open("assets/template_preference.txt", "r") as f:
                     template_id = f.read().strip()
-                    if template_id in templates:
+                    
+                    if template_id == "custom":
+                        if os.path.exists("assets/custom_template.tex"):
+                            with open("assets/custom_template.tex", "r") as custom_f:
+                                content = custom_f.read()
+                    elif template_id in templates:
                         content = templates[template_id]
         except Exception as e:
             print(f"Error reading template preference: {e}")

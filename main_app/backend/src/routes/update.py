@@ -61,6 +61,11 @@ async def update_resume(payload: LinkRequest):
             async with aiofiles.open("assets/template_preference.txt", "w") as f:
                 await f.write(template_id)
 
+            # Save custom template content if provided
+            if template_id == "custom" and _tex_content:
+                async with aiofiles.open("assets/custom_template.tex", "w") as f:
+                    await f.write(_tex_content)
+
         tasks_submitted = 0
 
         if _tex_content:

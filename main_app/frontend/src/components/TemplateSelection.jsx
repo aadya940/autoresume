@@ -95,6 +95,58 @@ const TemplateSelection = () => {
                             </Card.Footer>
                         </Card.Root>
                     ))}
+                    <Card.Root variant="elevated" _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }} borderStyle="dashed" borderWidth="2px" borderColor="blue.400">
+                        <Card.Body display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                            <Box
+                                height="150px"
+                                width="100%"
+                                bg="blue.50"
+                                mb={4}
+                                borderRadius="md"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                <Text fontSize="4xl">📤</Text>
+                            </Box>
+                            <Heading size="md" mb={2}>Custom Template</Heading>
+                            <Text color="gray.600" textAlign="center">Upload your own .tex file</Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Button
+                                as="label"
+                                htmlFor="file-upload"
+                                colorScheme="blue"
+                                variant="outline"
+                                width="100%"
+                                cursor="pointer"
+                                loading={loading}
+                                loadingText="Uploading..."
+                            >
+                                Upload .tex
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept=".tex"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = (e) => {
+                                                handleSelectTemplate({
+                                                    id: 'custom',
+                                                    name: 'Custom Template',
+                                                    tex_content: e.target.result
+                                                });
+                                            };
+                                            reader.readAsText(file);
+                                        }
+                                    }}
+                                />
+                            </Button>
+                        </Card.Footer>
+                    </Card.Root>
                 </SimpleGrid>
             </VStack>
         </Box>
