@@ -10,14 +10,6 @@
 
 ---
 
-## How to use this?
-
-📖 **[Medium Blog Link](https://medium.com/@aadyachinubhai/autoresume-copy-and-paste-links-its-that-simple-8e50e6d155a1)**
-
->  **Note:** The Blog is outdated with respect to the User Interface and Template used.
-
----
-
 ## Features
 
 <div align="center">
