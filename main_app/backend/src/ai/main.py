@@ -87,27 +87,22 @@ def validate_assets_directory():
 async def append_and_compile(info, file_path, output_dir, prompt=None):
     """Append new content to the LaTeX file and compile it. Handles status updates internally."""
 
-    try:
+    # Start validation early (cached after first call)
+    validate_assets_directory()
 
-        # Start validation early (cached after first call)
-        validate_assets_directory()
+    # Concurrent file read and runner init
+    current_code_task = asyncio.create_task(asyncio.to_thread(read_file, file_path))
+    runner_task = asyncio.create_task(get_runner())
+    current_code, runner = await asyncio.gather(current_code_task, runner_task)
 
-        # Concurrent file read and runner init
-        current_code_task = asyncio.create_task(asyncio.to_thread(read_file, file_path))
-        runner_task = asyncio.create_task(get_runner())
-        current_code, runner = await asyncio.gather(current_code_task, runner_task)
+    # Prompt construction
+    if prompt is None:
+        prompt = build_generic_prompt(info, current_code)
 
-        # Prompt construction
-        if prompt is None:
-            prompt = build_generic_prompt(info, current_code)
+    # Get LLM response
+    llm_response = await get_llm_response(prompt, runner)
+    cleaned_response = clean_latex_block(llm_response)
 
-        # Get LLM response
-        llm_response = await get_llm_response(prompt, runner)
-        cleaned_response = clean_latex_block(llm_response)
-
-        # Write and compile
-        await asyncio.to_thread(write_file, file_path, cleaned_response)
-        await asyncio.to_thread(compile_tex, output_dir, file_path)
-
-    except Exception as e:
-        pass
+    # Write and compile
+    await asyncio.to_thread(write_file, file_path, cleaned_response)
+    await asyncio.to_thread(compile_tex, output_dir, file_path)

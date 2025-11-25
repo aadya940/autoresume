@@ -90,7 +90,7 @@ function App() {
     <Box minH="100vh" width="100%" display="flex" flexDirection="column" alignItems="center">
       <Box width="100%" flex="1" display="flex" flexDirection="column" alignItems="center">
         {/* The heading Bar */}
-        <HeaderBar onBack={() => window.location.href = '/'} />
+        <HeaderBar onBack={() => window.location.href = '/'} isPdfMode={isPdfMode} />
 
         {/* The title slogan */}
         <Text

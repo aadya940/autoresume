@@ -24,6 +24,7 @@ main_app/backend/src/assets/user_file.aux
 main_app/backend/src/assets/user_file.log
 main_app/backend/src/assets/link_cache.txt
 main_app/backend/src/assets/template_preference.txt
+main_app/backend/src/.env
 
 # OS
 .DS_Store

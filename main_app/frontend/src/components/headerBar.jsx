@@ -4,7 +4,7 @@ import { FaCog, FaTrash } from 'react-icons/fa';
 import { toaster } from './ui/toaster';
 import LoginPopup from './loginPopup';
 
-export default function HeaderBar({ onBack }) {
+export default function HeaderBar({ onBack, isPdfMode }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const handleLoginClick = () => {
@@ -42,31 +42,36 @@ export default function HeaderBar({ onBack }) {
     }
   }
 
-  const handleExportPdf = async () => {
+  const handleExport = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/serve_pdf?file_type=pdf', {
+      // isPdfMode=true means TeX Editor is visible (confusing variable name)
+      // isPdfMode=false means PDF Viewer is visible
+      const fileType = isPdfMode ? 'tex' : 'pdf';
+      const downloadParam = isPdfMode ? '&download=true' : '';
+
+      const response = await fetch(`http://localhost:8000/api/serve_pdf?file_type=${fileType}${downloadParam}`, {
         method: 'GET',
       });
 
       if (!response.ok) {
-        throw new Error('Failed to download PDF');
+        throw new Error(`Failed to download ${fileType.toUpperCase()}`);
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'resume.pdf';
+      a.download = `resume.${fileType}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
 
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error('Error downloading file:', error);
       toaster.error({
         title: "Error",
-        description: "Failed to download PDF. Please try again.",
+        description: "Failed to download file. Please try again.",
         duration: 3000,
         closable: true,
       });
@@ -115,7 +120,9 @@ export default function HeaderBar({ onBack }) {
           >
             <Icon as={FaCog} boxSize={5} />
           </Button>
-          <Button colorScheme="blue" onClick={handleExportPdf}>Export PDF</Button>
+          <Button colorScheme="blue" onClick={handleExport}>
+            {isPdfMode ? 'Export TeX' : 'Export PDF'}
+          </Button>
         </Flex>
       </Box>
 

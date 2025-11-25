@@ -9,12 +9,14 @@ serve_pdf_router = APIRouter()
 
 
 @serve_pdf_router.get("/api/serve_pdf")
-async def serve_pdf(file_type: str = "pdf"):
+async def serve_pdf(file_type: str = "pdf", download: bool = False):
 
     if file_type == "tex":
         filename: str = "user_file.tex"
+        media_type = "application/x-tex"
     else:
         filename: str = "user_file.pdf"
+        media_type = "application/pdf"
 
     assets_dir = os.path.join(os.path.dirname(__file__), "..", "assets")
     file_path = os.path.join(assets_dir, filename)
@@ -22,10 +24,10 @@ async def serve_pdf(file_type: str = "pdf"):
     if not os.path.exists(file_path):
         return {"error": "File not found"}
 
-    if file_type == "pdf":
+    if file_type == "pdf" or download:
         return FileResponse(
             file_path,
-            media_type="application/pdf",
+            media_type=media_type,
             filename=filename,
             headers={
                 "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
