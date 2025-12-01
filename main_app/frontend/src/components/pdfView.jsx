@@ -97,16 +97,30 @@ function PdfViewer({ endpoint = 'http://localhost:8000/api/serve_pdf?file_type=p
 
 
   if (loading) {
-    return <Spinner size="lg" />;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Spinner size="lg" />
+      </Box>
+    );
   }
 
   if (error) {
-    return <Text color="red.500">Error: {error}</Text>;
+    return (
+      <Box p={4}>
+        <Text color="red.500">Error: {error}</Text>
+      </Box>
+    );
   }
 
   return (
-    <Box display="flex" justifyContent="center" width="90%">
-      <Box border="2px solid black" borderRadius="md" p={4} overflow="auto" width="100%" maxW="800px">
+    <Box display="flex" justifyContent="center" width="100%" height="100%">
+      <Box
+        overflow="auto"
+        width="100%"
+        height="100%"
+        bg="white"
+        p={4}
+      >
         <Document
           file={pdfData}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -119,7 +133,7 @@ function PdfViewer({ endpoint = 'http://localhost:8000/api/serve_pdf?file_type=p
               <Page
                 key={`page_${index + 1}`}
                 pageNumber={index + 1}
-                width={600}
+                width={Math.min(500, window.innerWidth * 0.5)}
                 renderTextLayer={false}
                 renderAnnotationLayer={false}
                 loading={<Spinner />}

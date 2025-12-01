@@ -69,7 +69,7 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
 
   if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minH="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
         <Spinner size="xl" />
       </Box>
     );
@@ -84,9 +84,9 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
   }
 
   return (
-    <Box minH="100vh" bg="white" border="2px solid black" color="black" p={6}>
+    <Box height="100%" width="100%" bg="white" color="black">
       <Editor
-        height="90vh"
+        height="100%"
         language="latex"
         value={code}
         onChange={(value) => setCode(value || "")}
