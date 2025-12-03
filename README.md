@@ -2,7 +2,7 @@
 
 **Build professional resumes with AI and automatically find the jobs that match them.**
 
-<img src="main_app/frontend/public/autoresume-logo.png" width="200" alt="autoResume Logo" />
+<img src="main_app/frontend/public/autoresume-logo.png" width="200" align="center" alt="autoResume Logo" />
 
 ## Quick Start
 
