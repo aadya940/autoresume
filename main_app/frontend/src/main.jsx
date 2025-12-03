@@ -4,6 +4,8 @@ import { Provider } from "./components/ui/provider"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import TemplateSelection from './components/TemplateSelection';
+import BackgroundQuestionnaire from './components/BackgroundQuestionnaire';
+import JobSearch from './components/JobSearch';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -15,7 +17,9 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<TemplateSelection />} />
+          <Route path="/questionnaire" element={<BackgroundQuestionnaire />} />
           <Route path="/editor" element={<App />} />
+          <Route path="/jobs" element={<JobSearch />} />
         </Routes>
       </BrowserRouter>
     </Provider>

@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install LaTeX for the `pdflatex` commands.
+# Install LaTeX for the `pdflatex` commands and pandoc for resume parsing.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     texlive-latex-base \
@@ -12,6 +12,7 @@ RUN apt-get update && \
     texlive-luatex \
     ghostscript \
     poppler-utils \
+    pandoc \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies

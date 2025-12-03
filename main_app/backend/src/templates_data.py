@@ -362,5 +362,5 @@ templates = {
     "Basic": basic_template,
     "Modern": modern_template,
     "Classic": classic_template,
-    "Minimalist": minimalist_template
+    "Minimalist": minimalist_template,
 }

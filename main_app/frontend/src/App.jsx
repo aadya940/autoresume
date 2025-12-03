@@ -1,11 +1,11 @@
 import './App.css';
 
 import { Box, HStack, Text, Button, Textarea, Input } from '@chakra-ui/react';
-import HeaderBar from './components/headerBar';
-import PdfViewer from './components/pdfView';
+import HeaderBar from './components/HeaderBar';
+import PdfViewer from './components/PdfView';
 import { useState, useEffect } from 'react';
 import { toaster, Toaster } from './components/ui/toaster';
-import CodeEditor from './components/codeEditor';
+import CodeEditor from './components/CodeEditor';
 
 function App() {
   const [aiSuggestion, setAiSuggestion] = useState('');

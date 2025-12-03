@@ -11,7 +11,7 @@ def clear_pdf():
         # Preserve template preference file and custom template
         if "template_preference.txt" in file_path or "custom_template.tex" in file_path:
             continue
-            
+
         try:
             os.remove(file_path)
         except Exception as e:
@@ -38,15 +38,17 @@ def _extract_relevant_info(link, task=None):
 
 
 def initialise_pdf():
-    if len(os.listdir("assets")) <= 2: # Allow for template_preference.txt, custom_template.tex
+    if (
+        len(os.listdir("assets")) <= 2
+    ):  # Allow for template_preference.txt, custom_template.tex
         content = basic_template
-        
+
         # Check for template preference
         try:
             if os.path.exists("assets/template_preference.txt"):
                 with open("assets/template_preference.txt", "r") as f:
                     template_id = f.read().strip()
-                    
+
                     if template_id == "custom":
                         if os.path.exists("assets/custom_template.tex"):
                             with open("assets/custom_template.tex", "r") as custom_f:

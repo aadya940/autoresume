@@ -1,11 +1,13 @@
 import { Box, Flex, Button, Spacer, Image, Text, Icon } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaCog, FaTrash } from 'react-icons/fa';
 import { toaster } from './ui/toaster';
-import LoginPopup from './loginPopup';
+import LoginPopup from './LoginPopup';
 
 export default function HeaderBar({ onBack, isPdfMode }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     setIsLoginOpen(prevState => !prevState);
@@ -56,9 +58,27 @@ export default function HeaderBar({ onBack, isPdfMode }) {
         zIndex={1000}
       >
         <Flex align="center">
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            mr={4}
+            onClick={() => navigate('/')}
+            size="sm"
+          >
+            Change Template
+          </Button>
           <Image src="/autoresume-logo.png" alt="AutoResume Logo" height="50px" />
           <Text fontSize="2xl" fontWeight="bold">autoResume</Text>
           <Spacer />
+
+          <Button
+            colorScheme="purple"
+            mr={3}
+            onClick={() => navigate('/jobs')}
+            size="sm"
+          >
+            🔍 Find Jobs
+          </Button>
 
           <Button
             variant="ghost"

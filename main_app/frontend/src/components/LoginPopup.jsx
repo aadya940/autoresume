@@ -11,7 +11,7 @@ const PopupStyleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       const response = await fetch('/api/save-settings', {
         method: 'POST',
@@ -25,7 +25,7 @@ const PopupStyleForm = () => {
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to save settings');
       }
@@ -83,14 +83,21 @@ const PopupStyleForm = () => {
                 type="email"
                 placeholder="Enter your email"
               />
-              <Button 
-                type="submit" 
-                colorScheme="blue" 
+              <Button
+                type="submit"
+                colorScheme="blue"
                 width="100%"
                 isLoading={isLoading}
                 loadingText="Saving..."
               >
                 Save Settings
+              </Button>
+              <Button
+                colorScheme="green"
+                width="100%"
+                onClick={() => window.location.href = '/questionnaire'}
+              >
+                Update Background Information
               </Button>
             </VStack>
           </form>

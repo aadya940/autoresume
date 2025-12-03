@@ -5,8 +5,12 @@ sqlalchemy
 google-adk
 google-generativeai
 httpx
-python-dotenv
 crawl4ai
 pydantic
 taskiq
 playwright
+yake
+pylatexenc
+python-jobspy
+pandas
+pypandoc
