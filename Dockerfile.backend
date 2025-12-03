@@ -16,12 +16,12 @@ RUN apt-get update && \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY main_app/backend/requirements.txt .
+COPY app/backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN playwright install --with-deps chromium
 
 # Copy backend code
-COPY main_app/backend/ .
+COPY app/backend/ .
 
 # Set working directory to where main.py is
 WORKDIR /app/src
