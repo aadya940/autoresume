@@ -8,8 +8,14 @@ import logging
 from pathlib import Path
 
 from ai.jobs import JobMatcher, JobMatcherError, ResumeParseError
+from task_queue import job_search_task
 
 logger = logging.getLogger(__name__)
+
+
+# Store active job search tasks
+active_job_search_tasks = []
+
 
 job_search_router = APIRouter()
 
@@ -78,31 +84,30 @@ async def search_jobs(request: JobSearchRequest):
 
     try:
         logger.info(
-            f"Starting job search: title={request.job_title}, "
+            f"Dispatching job search task: title={request.job_title}, "
             f"location={request.location}, max_results={request.max_results}"
         )
 
-        matcher = JobMatcher(resume_path)
-        result = matcher.search(
+        message = await job_search_task.kiq(
+            resume_path=str(resume_path),
             location=request.location,
             job_title=request.job_title,
             max_results=request.max_results,
             sites=request.sites,
         )
 
-        logger.info(
-            f"Job search completed: success={result.success}, "
-            f"total_jobs={result.total_jobs}"
+        active_job_search_tasks.append(message.task_id)
+        logger.info(f"Job search task dispatched with ID: {message.task_id}")
+
+        return JSONResponse(
+            content={
+                "message": "Job search started",
+                "task_id": message.task_id,
+                "status": "processing"
+            },
+            status_code=202
         )
 
-        return JSONResponse(content=result.dict())
-
-    except ResumeParseError as e:
-        logger.error(f"Resume parse error: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except JobMatcherError as e:
-        logger.error(f"Job matcher error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        logger.error(f"Unexpected error in job search: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Job search failed: {str(e)}")
+        logger.error(f"Error dispatching job search: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Job search failed to start: {str(e)}")

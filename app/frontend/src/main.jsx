@@ -6,6 +6,7 @@ import App from './App';
 import TemplateSelection from './components/TemplateSelection';
 import BackgroundQuestionnaire from './components/BackgroundQuestionnaire';
 import JobSearch from './components/JobSearch';
+import JobDetailPage from './components/JobDetailPage';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -20,6 +21,7 @@ root.render(
           <Route path="/questionnaire" element={<BackgroundQuestionnaire />} />
           <Route path="/editor" element={<App />} />
           <Route path="/jobs" element={<JobSearch />} />
+          <Route path="/jobs/:jobId" element={<JobDetailPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>

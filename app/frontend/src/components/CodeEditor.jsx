@@ -44,21 +44,22 @@ function LaTeXEditor({ code, setCode, endpoint = 'http://localhost:8000/api/serv
       if (!isMounted.current) return;
 
       if (event.data === 'ready') {
+        if (!isMounted.current) return; // Double-check before state update
         setIsEditorReady(true);
         if (!hasFetchedRef.current) {
           hasFetchedRef.current = true;
           fetchLaTeX();
         }
       } else {
+        if (!isMounted.current) return;
         setIsEditorReady(false);
         hasFetchedRef.current = false;
       }
     };
 
     eventSource.onerror = (err) => {
-      if (isMounted.current) {
-        console.error('SSE Error:', err);
-      }
+      console.error('SSE Error:', err);
+      eventSource.close(); // Close on error to prevent reconnection loops
     };
 
     return () => {

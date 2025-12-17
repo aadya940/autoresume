@@ -24,8 +24,30 @@ const JobSearch = () => {
     const [jobs, setJobs] = useState([]);
     const [searching, setSearching] = useState(false);
 
+    // Cache key for session storage
+    const CACHE_KEY = 'job_search_cache';
+    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
     // Fetch skills when component mounts
     useEffect(() => {
+        // Check for cached jobs first
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+            try {
+                const { jobs: cachedJobs, skills: cachedSkills, timestamp } = JSON.parse(cached);
+                // Use cache if less than 5 minutes old
+                if (Date.now() - timestamp < CACHE_DURATION) {
+                    setJobs(cachedJobs);
+                    setSkills(cachedSkills);
+                    setLoadingSkills(false);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error loading cache:', e);
+            }
+        }
+
+        // No valid cache, fetch skills and search
         fetchSkills();
     }, []);
 
@@ -42,7 +64,7 @@ const JobSearch = () => {
                 setSkills(data.skills || []);
                 // Automatically search for jobs after skills are loaded
                 if (data.skills && data.skills.length > 0) {
-                    handleSearch();
+                    handleSearch(data.skills);
                 }
             }
         } catch (error) {
@@ -57,11 +79,12 @@ const JobSearch = () => {
         }
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async (skillsToUse = skills) => {
         setSearching(true);
 
         try {
-            const response = await fetch('http://localhost:8000/api/jobs/search', {
+            // Start the search task
+            const startResponse = await fetch('http://localhost:8000/api/jobs/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,22 +97,14 @@ const JobSearch = () => {
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error('Search failed');
+            if (!startResponse.ok) {
+                throw new Error('Failed to start search');
             }
 
-            const data = await response.json();
+            // We don't strictly need the task_id here for polling anymore, 
+            // but the backend still returns it. 
+            // The SSE listener will pick up the result when ready.
 
-            if (data.success) {
-                setJobs(data.jobs || []);
-                toaster.success({
-                    title: 'Success',
-                    description: `Found ${data.total_jobs} jobs matching your skills!`,
-                    duration: 3000,
-                });
-            } else {
-                throw new Error(data.error || 'Search failed');
-            }
         } catch (error) {
             console.error('Error searching jobs:', error);
             toaster.error({
@@ -97,10 +112,56 @@ const JobSearch = () => {
                 description: error.message || 'Could not search for jobs. Please try again.',
                 duration: 5000,
             });
-        } finally {
             setSearching(false);
         }
     };
+
+    // Listen for SSE updates
+    useEffect(() => {
+        const eventSource = new EventSource('http://localhost:8000/api/events');
+
+        eventSource.addEventListener('job_update', (event) => {
+            try {
+                const data = JSON.parse(event.data);
+
+                if (data.success) {
+                    setJobs(data.jobs || []);
+
+                    // Cache the results
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                        jobs: data.jobs || [],
+                        skills: skills, // Use current skills state
+                        timestamp: Date.now()
+                    }));
+
+                    toaster.success({
+                        title: 'Success',
+                        description: `Found ${data.total_jobs} jobs matching your skills!`,
+                        duration: 3000,
+                    });
+                } else {
+                    toaster.error({
+                        title: 'Search Failed',
+                        description: data.error || 'Job search failed.',
+                        duration: 5000,
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing job update:', e);
+            } finally {
+                setSearching(false);
+            }
+        });
+
+        eventSource.onerror = (err) => {
+            console.error('SSE Error:', err);
+            eventSource.close();
+        };
+
+        return () => {
+            eventSource.close();
+        };
+    }, [skills]); // Depend on skills for cache updating if needed, though mostly independent
 
     const getJobTypeColor = (type) => {
         const typeMap = {
@@ -134,6 +195,14 @@ const JobSearch = () => {
                         <Image src="/autoresume-logo.png" alt="AutoResume Logo" height="50px" />
                         <Text fontSize="2xl" fontWeight="bold">autoResume</Text>
                         <Spacer />
+                        <Button
+                            colorScheme="blue"
+                            variant="outline"
+                            onClick={() => navigate('/editor')}
+                            size="sm"
+                        >
+                            ← Back to Resume Builder
+                        </Button>
                     </Flex>
                 </Container>
             </Box>
@@ -292,15 +361,13 @@ const JobSearch = () => {
 
                                         {/* Apply Button */}
                                         <Button
-                                            as="a"
-                                            href={job.job_url_direct}
-                                            target="_blank"
+                                            onClick={() => navigate(`/jobs/${index}`, { state: { job } })}
                                             colorScheme="blue"
                                             size="md"
                                             flexShrink={0}
                                             minW="120px"
                                         >
-                                            Apply Now
+                                            View Details
                                         </Button>
                                     </HStack>
                                 </Box>

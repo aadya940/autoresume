@@ -79,7 +79,138 @@ class SearchResult:
         return asdict(self)
 
 
+
+
+class JobDescriptionCleaner:
+    """Cleans job descriptions using keyword extraction to identify relevant content."""
+
+    BOILERPLATE_TERMS = frozenset([
+        "equal opportunity", "eeo", "accommodation", "disability", "ada",
+        "benefit", "insurance", "401k", "pension", "pto", "vacation",
+        "application process", "how to apply", "selection process",
+        "background check", "drug test", "e-verify",
+        "company culture", "why join us", "about our company",
+    ])
+
+    def __init__(self, top_keywords: int = 30):
+        """
+        Initialize description cleaner.
+        
+        Args:
+            top_keywords: Number of top keywords to extract for relevance scoring
+        """
+        self.top_keywords = top_keywords
+        self._kw_extractor = yake.KeywordExtractor(
+            top=top_keywords, lan="en", n=3, dedupLim=0.7
+        )
+
+    def clean(self, description: str, max_length: int = 2000) -> str:
+        """
+        Extract relevant content from job description.
+        
+        Args:
+            description: Full job description text
+            max_length: Maximum length of cleaned description
+            
+        Returns:
+            Cleaned description with relevant content
+        """
+        if not description or len(description) < 100:
+            return description
+
+        # Extract keywords to identify important content
+        try:
+            keywords = self._kw_extractor.extract_keywords(description)
+            keyword_set = {kw.lower() for kw, _ in keywords}
+        except Exception:
+            # Fallback if YAKE fails
+            return description[:max_length]
+
+        # Important section indicators (high priority)
+        priority_terms = {
+            'responsibilities', 'requirements', 'required', 'qualifications',
+            'skills', 'experience', 'duties', 'role', 'position', 'minimum',
+            'preferred', 'desired', 'must have', 'seeking', 'looking for'
+        }
+
+        # Split into lines and group into sections
+        lines = description.split('\n')
+        sections = []
+        current_section = []
+        current_header = ""
+        
+        for line in lines:
+            stripped = line.strip()
+            
+            # Detect section headers (bold text with ** or standalone emphasized text)
+            if stripped.startswith('**') or (len(stripped) > 3 and stripped.isupper()):
+                # Save previous section
+                if current_section:
+                    sections.append((current_header, '\n'.join(current_section)))
+                current_header = stripped.replace('**', '').replace('*', '').strip()
+                current_section = [line]
+            else:
+                current_section.append(line)
+        
+        # Add final section
+        if current_section:
+            sections.append((current_header, '\n'.join(current_section)))
+
+        # Score sections
+        scored_sections = []
+        for header, content in sections:
+            header_lower = header.lower()
+            content_lower = content.lower()
+            
+            # Skip boilerplate sections
+            if any(term in header_lower for term in self.BOILERPLATE_TERMS):
+                continue
+            if any(term in content_lower[:200] for term in ['about our company', 'about peraton', 'about the company', 'why join', 'our culture']):
+                continue
+            
+            # Calculate score based on priority terms and keywords
+            score = 0
+            
+            # High score for priority terms in header
+            if any(term in header_lower for term in priority_terms):
+                score += 100
+            
+            # Score based on keyword presence in content
+            words = set(content_lower.split())
+            keyword_matches = sum(1 for kw in keyword_set if any(kw in word for word in words))
+            score += keyword_matches * 5
+            
+            # Bonus for priority terms in content
+            priority_matches = sum(1 for term in priority_terms if term in content_lower)
+            score += priority_matches * 10
+            
+            # Penalty for very short sections (likely not important)
+            if len(content) < 50:
+                score = score // 2
+            
+            if score > 0:
+                scored_sections.append((score, header, content))
+
+        # Sort by score
+        scored_sections.sort(reverse=True, key=lambda x: x[0])
+        
+        # Combine top sections until we reach max_length
+        result = []
+        current_length = 0
+        
+        for score, header, content in scored_sections:
+            section_text = content
+            if current_length + len(section_text) > max_length:
+                break
+            result.append(section_text)
+            current_length += len(section_text)
+
+        cleaned = '\n\n'.join(result).strip()
+        return cleaned if cleaned else description[:max_length]
+
+
 class SkillExtractor:
+
     """Extracts technical skills from resume text."""
 
     EXCLUDED_TERMS = frozenset(
@@ -100,8 +231,6 @@ class SkillExtractor:
             "present",
             "previous",
             "responsibilities",
-            "aadya",
-            "chinubhai",
         ]
     )
 
@@ -174,6 +303,7 @@ class JobMatcher:
         self,
         resume_path: Union[str, Path],
         skill_extractor: Optional[SkillExtractor] = None,
+        description_cleaner: Optional[JobDescriptionCleaner] = None,
     ):
         """
         Initialize JobMatcher.
@@ -181,6 +311,7 @@ class JobMatcher:
         Args:
             resume_path: Path to resume file (.tex, .pdf, .docx)
             skill_extractor: Custom skill extractor (optional)
+            description_cleaner: Custom description cleaner (optional)
 
         Raises:
             ResumeParseError: If resume cannot be parsed
@@ -189,6 +320,7 @@ class JobMatcher:
         self._text = self._parse_resume()
         self._extractor = skill_extractor or SkillExtractor()
         self._skills = self._extractor.extract(self._text)
+        self._desc_cleaner = description_cleaner or JobDescriptionCleaner()
 
         logger.info(f"Initialized JobMatcher with {len(self._skills)} skills")
 
@@ -269,7 +401,7 @@ class JobMatcher:
         try:
             jobs_df = self._scrape_jobs(params)
 
-            # Convert to JSON-serializable format - handle date objects
+            # Convert to JSON-serializable format - handle date objects and clean descriptions
             jobs_list = []
             for record in jobs_df.to_dict("records"):
                 cleaned_record = {}
@@ -280,6 +412,14 @@ class JobMatcher:
                         cleaned_record[key] = value.isoformat()
                     else:
                         cleaned_record[key] = value
+                
+                # Clean job description if present
+                if cleaned_record.get('description'):
+                    original_desc = cleaned_record['description']
+                    cleaned_record['description_full'] = original_desc
+                    cleaned_record['description'] = self._desc_cleaner.clean(original_desc)
+                    logger.debug(f"Cleaned description from {len(original_desc)} to {len(cleaned_record['description'])} chars")
+                
                 jobs_list.append(cleaned_record)
 
             logger.info(f"Successfully found {len(jobs_list)} jobs")

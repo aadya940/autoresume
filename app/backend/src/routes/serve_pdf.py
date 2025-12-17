@@ -9,14 +9,23 @@ serve_pdf_router = APIRouter()
 
 
 @serve_pdf_router.get("/api/serve_pdf")
-async def serve_pdf(file_type: str = "pdf", download: bool = False):
+async def serve_pdf(file_type: str = "pdf", download: bool = False, cover_letter: bool = False):
 
-    if file_type == "tex":
-        filename: str = "user_file.tex"
-        media_type = "application/x-tex"
+    # Determine filename based on cover_letter flag
+    if cover_letter:
+        if file_type == "tex":
+            filename: str = "generated_cover_letter.tex"
+            media_type = "application/x-tex"
+        else:
+            filename: str = "generated_cover_letter.pdf"
+            media_type = "application/pdf"
     else:
-        filename: str = "user_file.pdf"
-        media_type = "application/pdf"
+        if file_type == "tex":
+            filename: str = "user_file.tex"
+            media_type = "application/x-tex"
+        else:
+            filename: str = "user_file.pdf"
+            media_type = "application/pdf"
 
     assets_dir = os.path.join(os.path.dirname(__file__), "..", "assets")
     file_path = os.path.join(assets_dir, filename)
