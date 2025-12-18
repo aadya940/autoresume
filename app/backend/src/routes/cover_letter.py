@@ -26,6 +26,12 @@ class CoverLetterRequest(BaseModel):
     job_url: Optional[str] = None
 
 
+class CoverLetterUpdateRequest(BaseModel):
+    """Cover letter update request model."""
+    
+    tex_content: str
+
+
 @cover_letter_router.post("/api/cover-letter/generate")
 async def generate_cover_letter(request: CoverLetterRequest):
     """
@@ -68,4 +74,44 @@ async def generate_cover_letter(request: CoverLetterRequest):
     except Exception as e:
         logger.error(f"Error generating cover letter: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Failed to generate cover letter: {str(e)}")
+
+
+@cover_letter_router.post("/api/cover-letter/update")
+async def update_cover_letter(request: CoverLetterUpdateRequest):
+    """
+    Update cover letter with edited LaTeX content and recompile.
+    
+    Args:
+        request: Cover letter update request with tex_content
+        
+    Returns:
+        JSON with success status
+    """
+    try:
+        logger.info("Updating cover letter with edited content")
+        
+        # Ensure assets directory exists
+        assets_dir = Path("assets")
+        assets_dir.mkdir(parents=True, exist_ok=True)
+        
+        tex_path = assets_dir / "generated_cover_letter.tex"
+        
+        # Write new content
+        with open(tex_path, "w", encoding="utf-8") as f:
+            f.write(request.tex_content)
+        
+        # Recompile
+        from ai.utils import compile_tex
+        compile_tex(str(assets_dir), str(tex_path))
+        
+        logger.info("Cover letter updated and recompiled successfully")
+        
+        return JSONResponse({
+            "success": True,
+            "message": "Cover letter updated"
+        })
+        
+    except Exception as e:
+        logger.error(f"Error updating cover letter: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to update cover letter: {str(e)}")
 

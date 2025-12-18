@@ -6,6 +6,7 @@ https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/#coverti
 
 import logging
 import asyncio
+import os
 from pathlib import Path
 from datetime import datetime
 from typing import Dict
@@ -20,6 +21,11 @@ from google.adk.planners.built_in_planner import BuiltInPlanner
 from ai.jobs import JobMatcher
 
 logger = logging.getLogger(__name__)
+
+# Verify API key is available
+if not os.getenv("GOOGLE_API_KEY"):
+    logger.error("GOOGLE_API_KEY environment variable is not set!")
+    raise ValueError("GOOGLE_API_KEY is required for cover letter generation. Please set it in your .env file.")
 
 
 HARVARD_GUIDELINES_SYSTEM = """You are an expert cover letter writer following Harvard Career Services guidelines.
@@ -68,7 +74,7 @@ class CoverLetterAgent(LlmAgent):
         super().__init__(
             name="cover_letter_agent",
             description="Generates professional cover letters following Harvard guidelines",
-            model="gemini-2.5-flash",
+            model="gemini-3-flash-preview",
             planner=self._planner,
         )
 

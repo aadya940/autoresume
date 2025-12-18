@@ -184,14 +184,19 @@ def generate_cover_letter_task(job_description: str, company: str, title: str):
                 title=title
             )
             
+            # Ensure assets directory exists
+            from pathlib import Path
+            assets_dir = Path("assets")
+            assets_dir.mkdir(parents=True, exist_ok=True)
+            
             # Write and compile using asyncio.to_thread for I/O
-            tex_path = "assets/generated_cover_letter.tex"
+            tex_path = assets_dir / "generated_cover_letter.tex"
             
             await asyncio.to_thread(
                 lambda: open(tex_path, "w", encoding="utf-8").write(result["tex_content"])
             )
             
-            await asyncio.to_thread(compile_tex, "assets", tex_path)
+            await asyncio.to_thread(compile_tex, str(assets_dir), str(tex_path))
             
             logger.info(f"Cover letter generated and compiled successfully for {company}")
             

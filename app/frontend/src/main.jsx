@@ -7,6 +7,7 @@ import TemplateSelection from './components/TemplateSelection';
 import BackgroundQuestionnaire from './components/BackgroundQuestionnaire';
 import JobSearch from './components/JobSearch';
 import JobDetailPage from './components/JobDetailPage';
+import CoverLetterEditor from './components/CoverLetterEditor';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -22,6 +23,7 @@ root.render(
           <Route path="/editor" element={<App />} />
           <Route path="/jobs" element={<JobSearch />} />
           <Route path="/jobs/:jobId" element={<JobDetailPage />} />
+          <Route path="/cover-letter" element={<CoverLetterEditor />} />
         </Routes>
       </BrowserRouter>
     </Provider>

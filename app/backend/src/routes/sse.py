@@ -68,6 +68,50 @@ async def sse_endpoint():
                     if task_id in active_job_search_tasks:
                         active_job_search_tasks.remove(task_id)
             
+            # Check cover letter tasks independently
+            for task_id in active_cover_letter_tasks[:]:
+                try:
+                    logger.info(f"[COVER LETTER SSE] Checking task {task_id}")
+                    
+                    try:
+                        result = await broker.result_backend.get_result(task_id)
+                        logger.info(f"[COVER LETTER SSE] Got result for {task_id}: {type(result)}")
+                    except KeyError as ke:
+                        logger.warning(f"[COVER LETTER SSE] KeyError for {task_id}: {ke}")
+                        result = None
+                    except Exception as ex:
+                        logger.error(f"[COVER LETTER SSE] Exception getting result for {task_id}: {ex}", exc_info=True)
+                        result = None
+
+                    if result is not None:
+                        logger.info(f"[COVER LETTER SSE] Task {task_id} completed, processing...")
+                        
+                        # Cover letter completed, remove from active list and emit event
+                        active_cover_letter_tasks.remove(task_id)
+                        
+                        if hasattr(result, "is_err") and result.is_err:
+                            logger.error(f"Cover letter task {task_id} failed: {result.error}")
+                            payload = {"success": False, "error": str(result.error), "task_id": task_id}
+                        else:
+                            logger.info(f"[COVER LETTER SSE] Extracting return_value")
+                            payload = {
+                                "success": True,
+                                "task_id": task_id,
+                                "message": result.return_value.get("message", "Cover letter generated")
+                            }
+                            logger.info(f"[COVER LETTER SSE] Payload: {payload}")
+                        
+                        logger.info(f"[COVER LETTER SSE] Emitting cover_letter_update event")
+                        yield f"event: cover_letter_update\ndata: {json.dumps(payload)}\n\n"
+                        logger.info(f"[COVER LETTER SSE] Event emitted successfully")
+                    else:
+                        logger.info(f"[COVER LETTER SSE] Result is None, task not complete yet")
+                        
+                except Exception as e:
+                    logger.error(f"[COVER LETTER SSE] Error: {e}", exc_info=True)
+                    if task_id in active_cover_letter_tasks:
+                        active_cover_letter_tasks.remove(task_id)
+            
             # Combine all active tasks from both resume and cover letter
             all_tasks = active_tasks + active_cover_letter_tasks
             
