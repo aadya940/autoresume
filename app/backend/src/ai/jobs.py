@@ -210,81 +210,120 @@ class JobDescriptionCleaner:
 
 
 class SkillExtractor:
-
-    """Extracts technical skills from resume text."""
-
-    EXCLUDED_TERMS = frozenset(
-        [
-            "experience",
-            "company",
-            "month",
-            "year",
-            "job",
-            "title",
-            "state",
-            "city",
-            "orchestrated",
-            "deployment",
-            "education",
-            "university",
-            "degree",
-            "present",
-            "previous",
-            "responsibilities",
-        ]
-    )
+    """Extracts skills from resume by intelligently parsing relevant sections."""
 
     def __init__(self, top_n: int = 10):
         self.top_n = top_n
+        # Allow 2-word phrases for better skill extraction (e.g., "machine learning")
         self._kw_extractor = yake.KeywordExtractor(
-            top=top_n * 2, lan="en", n=1, dedupLim=0.9
+            top=top_n * 2,
+            lan="en",
+            n=2,  # 1-2 word phrases
+            dedupLim=0.8
         )
 
     def extract(self, text: str) -> List[str]:
         """
-        Extract skills from resume text.
+        Extract skills from resume text using section-aware approach.
 
         Args:
             text: Resume text content
 
         Returns:
-            List of extracted skills
+            List of extracted skills from relevant sections
         """
-        skills = self._extract_structured(text)
+        # Try structured extraction from explicit Skills section first
+        skills = self._extract_from_skills_section(text)
+        
+        if len(skills) < self.top_n:
+            # Supplement with YAKE extraction from relevant sections only
+            additional = self._extract_from_relevant_sections(text)
+            skills.extend(additional)
+            
+        # Deduplicate and return
+        seen = set()
+        result = []
+        for skill in skills:
+            skill_lower = skill.lower()
+            if skill_lower not in seen and len(skill_lower) > 1:
+                seen.add(skill_lower)
+                result.append(skill_lower)
+                
+        return result[:self.top_n]
 
-        if not skills:
-            logger.debug("Structured extraction failed, falling back to YAKE")
-            skills = self._extract_yake(text)
-
-        return skills[: self.top_n]
-
-    def _extract_structured(self, text: str) -> List[str]:
-        """Extract from structured resume sections."""
+    def _extract_from_skills_section(self, text: str) -> List[str]:
+        """Extract from explicit Skills or Technical Skills section."""
         skills = []
-
-        if "Technical Skills" not in text:
-            return skills
-
-        try:
-            section = text.split("Technical Skills")[1].split("\n\n")[0]
-            for line in section.split("\n"):
-                if ":" in line:
-                    tech_list = line.split(":", 1)[1].strip()
-                    skills.extend(t.strip() for t in tech_list.split(","))
-        except IndexError:
-            logger.warning("Failed to parse Technical Skills section")
-
+        
+        # Look for Skills section
+        for header in ["Technical Skills", "Skills", "Core Competencies", "Technologies"]:
+            if header in text:
+                try:
+                    # Get text between this header and next section (or double newline)
+                    section_start = text.index(header) + len(header)
+                    remaining = text[section_start:]
+                    
+                    # Find section end (double newline or next major section)
+                    section_end = len(remaining)
+                    for next_header in ["\n\n", "Experience", "Education", "Projects"]:
+                        pos = remaining.find(next_header)
+                        if pos > 0 and pos < section_end:
+                            section_end = pos
+                    
+                    section_text = remaining[:section_end].strip()
+                    
+                    # Parse skills - check for colon-separated format first
+                    for line in section_text.split("\n"):
+                        if ":" in line:
+                            # Format: "Category: skill1, skill2, skill3"
+                            tech_list = line.split(":", 1)[1].strip()
+                            skills.extend(s.strip() for s in tech_list.split(",") if s.strip())
+                        elif line.strip() and not line.strip().startswith("•"):
+                            # Plain list of skills
+                            skills.extend(s.strip() for s in line.split(",") if s.strip())
+                    
+                    if skills:
+                        break  # Found skills, no need to check other headers
+                        
+                except (ValueError, IndexError):
+                    continue
+        
         return skills
 
-    def _extract_yake(self, text: str) -> List[str]:
-        """Extract using YAKE algorithm."""
-        keywords = self._kw_extractor.extract_keywords(text)
-        filtered = [
-            kw
-            for kw, _ in keywords
-            if not any(term in kw.lower() for term in self.EXCLUDED_TERMS)
-        ]
-        return filtered[: self.top_n]
+    def _extract_from_relevant_sections(self, text: str) -> List[str]:
+        """Extract keywords using YAKE but only from Experience section."""
+        # Find Experience section
+        experience_text = ""
+        
+        for header in ["Experience", "Work Experience", "Professional Experience"]:
+            if header in text:
+                try:
+                    section_start = text.index(header) + len(header)
+                    remaining = text[section_start:]
+                    
+                    # Find section end
+                    section_end = len(remaining)
+                    for next_header in ["Education", "Projects", "Publications", "Awards", "Certifications"]:
+                        pos = remaining.find(next_header)
+                        if pos > 0 and pos < section_end:
+                            section_end = pos
+                    
+                    experience_text = remaining[:section_end].strip()
+                    break
+                    
+                except (ValueError, IndexError):
+                    continue
+        
+        if not experience_text:
+            return []
+        
+        # Run YAKE on experience section only
+        try:
+            keywords = self._kw_extractor.extract_keywords(experience_text)
+            # Return just the keyword strings, limit to reasonable length
+            return [kw for kw, _ in keywords if 2 < len(kw) < 25]
+        except Exception:
+            return []
 
 
 class JobMatcher:
