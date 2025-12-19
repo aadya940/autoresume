@@ -216,6 +216,9 @@ Keep total output to 400-500 words."""
         # Generate with ADK
         generated_text = await self._get_llm_response(user_prompt)
         
+        # Post-process to remove AI-tell signs
+        generated_text = self._humanize_text(generated_text)
+        
         # Split into paragraphs
         paragraphs = [p.strip() for p in generated_text.split('\n\n') if p.strip()]
         
@@ -314,4 +317,33 @@ Sincerely,
             "keywords_matched": resume_skills,
             "resume_info": resume_info
         }
+    
+    def _humanize_text(self, text: str) -> str:
+        """
+        Remove AI-tell signs from generated text.
+        
+        Specifically removes:
+        - Em-dashes (—) which are overused by LLMs
+        - Multiple exclamation marks
+        
+        Args:
+            text: Generated cover letter text
+            
+        Returns:
+            Humanized text without obvious AI patterns
+        """
+        import re
+        
+        # Replace em-dash with comma
+        text = re.sub(r'(\w)—(\w)', r'\1, \2', text)
+        text = re.sub(r'(\w)\s*—\s*(\w)', r'\1, \2', text)
+        
+        # Remove multiple exclamation marks
+        text = re.sub(r'!+', '!', text)
+        
+        # Replace exclamations with periods at sentence end
+        text = re.sub(r'!\s*$', '.', text, flags=re.MULTILINE)
+        text = re.sub(r'!\s+([A-Z])', r'. \1', text)
+        
+        return text.strip()
 

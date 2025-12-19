@@ -34,7 +34,7 @@ class LatexCoderAgent(LlmAgent):
         super().__init__(
             name="latex_coder_agent",
             description="Updates the LaTeX code for a resume with additional information",
-            model="gemini-3-pro-preview",
+            model="gemini-3-flash-preview",
             planner=self._planner,
         )
 
