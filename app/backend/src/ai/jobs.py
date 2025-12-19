@@ -79,23 +79,38 @@ class SearchResult:
         return asdict(self)
 
 
-
-
 class JobDescriptionCleaner:
     """Cleans job descriptions using keyword extraction to identify relevant content."""
 
-    BOILERPLATE_TERMS = frozenset([
-        "equal opportunity", "eeo", "accommodation", "disability", "ada",
-        "benefit", "insurance", "401k", "pension", "pto", "vacation",
-        "application process", "how to apply", "selection process",
-        "background check", "drug test", "e-verify",
-        "company culture", "why join us", "about our company",
-    ])
+    BOILERPLATE_TERMS = frozenset(
+        [
+            "equal opportunity",
+            "eeo",
+            "accommodation",
+            "disability",
+            "ada",
+            "benefit",
+            "insurance",
+            "401k",
+            "pension",
+            "pto",
+            "vacation",
+            "application process",
+            "how to apply",
+            "selection process",
+            "background check",
+            "drug test",
+            "e-verify",
+            "company culture",
+            "why join us",
+            "about our company",
+        ]
+    )
 
     def __init__(self, top_keywords: int = 30):
         """
         Initialize description cleaner.
-        
+
         Args:
             top_keywords: Number of top keywords to extract for relevance scoring
         """
@@ -107,11 +122,11 @@ class JobDescriptionCleaner:
     def clean(self, description: str, max_length: int = 2000) -> str:
         """
         Extract relevant content from job description.
-        
+
         Args:
             description: Full job description text
             max_length: Maximum length of cleaned description
-            
+
         Returns:
             Cleaned description with relevant content
         """
@@ -128,76 +143,101 @@ class JobDescriptionCleaner:
 
         # Important section indicators (high priority)
         priority_terms = {
-            'responsibilities', 'requirements', 'required', 'qualifications',
-            'skills', 'experience', 'duties', 'role', 'position', 'minimum',
-            'preferred', 'desired', 'must have', 'seeking', 'looking for'
+            "responsibilities",
+            "requirements",
+            "required",
+            "qualifications",
+            "skills",
+            "experience",
+            "duties",
+            "role",
+            "position",
+            "minimum",
+            "preferred",
+            "desired",
+            "must have",
+            "seeking",
+            "looking for",
         }
 
         # Split into lines and group into sections
-        lines = description.split('\n')
+        lines = description.split("\n")
         sections = []
         current_section = []
         current_header = ""
-        
+
         for line in lines:
             stripped = line.strip()
-            
+
             # Detect section headers (bold text with ** or standalone emphasized text)
-            if stripped.startswith('**') or (len(stripped) > 3 and stripped.isupper()):
+            if stripped.startswith("**") or (len(stripped) > 3 and stripped.isupper()):
                 # Save previous section
                 if current_section:
-                    sections.append((current_header, '\n'.join(current_section)))
-                current_header = stripped.replace('**', '').replace('*', '').strip()
+                    sections.append((current_header, "\n".join(current_section)))
+                current_header = stripped.replace("**", "").replace("*", "").strip()
                 current_section = [line]
             else:
                 current_section.append(line)
-        
+
         # Add final section
         if current_section:
-            sections.append((current_header, '\n'.join(current_section)))
+            sections.append((current_header, "\n".join(current_section)))
 
         # Score sections
         scored_sections = []
         for header, content in sections:
             header_lower = header.lower()
             content_lower = content.lower()
-            
+
             # Skip boilerplate sections
             if any(term in header_lower for term in self.BOILERPLATE_TERMS):
                 continue
-            if any(term in content_lower[:200] for term in ['about our company', 'about peraton', 'about the company', 'why join', 'our culture']):
+            if any(
+                term in content_lower[:200]
+                for term in [
+                    "about our company",
+                    "about peraton",
+                    "about the company",
+                    "why join",
+                    "our culture",
+                ]
+            ):
                 continue
-            
+
             # Calculate score based on priority terms and keywords
             score = 0
-            
+
             # High score for priority terms in header
             if any(term in header_lower for term in priority_terms):
                 score += 100
-            
+
             # Score based on keyword presence in content
             words = set(content_lower.split())
-            keyword_matches = sum(1 for kw in keyword_set if any(kw in word for word in words))
+            keyword_matches = sum(
+                1 for kw in keyword_set if any(kw in word for word in words)
+            )
             score += keyword_matches * 5
-            
+
             # Bonus for priority terms in content
-            priority_matches = sum(1 for term in priority_terms if term in content_lower)
+            priority_matches = sum(
+                1 for term in priority_terms if term in content_lower
+            )
             score += priority_matches * 10
-            
+
             # Penalty for very short sections (likely not important)
             if len(content) < 50:
                 score = score // 2
-            
+
             if score > 0:
                 scored_sections.append((score, header, content))
 
         # Sort by score
         scored_sections.sort(reverse=True, key=lambda x: x[0])
-        
+
         # Combine top sections until we reach max_length
         result = []
         current_length = 0
-        
+
         for score, header, content in scored_sections:
             section_text = content
             if current_length + len(section_text) > max_length:
@@ -205,7 +245,7 @@ class JobDescriptionCleaner:
             result.append(section_text)
             current_length += len(section_text)
 
-        cleaned = '\n\n'.join(result).strip()
+        cleaned = "\n\n".join(result).strip()
         return cleaned if cleaned else description[:max_length]
 
 
@@ -216,10 +256,7 @@ class SkillExtractor:
         self.top_n = top_n
         # Allow 2-word phrases for better skill extraction (e.g., "machine learning")
         self._kw_extractor = yake.KeywordExtractor(
-            top=top_n * 2,
-            lan="en",
-            n=2,  # 1-2 word phrases
-            dedupLim=0.8
+            top=top_n * 2, lan="en", n=2, dedupLim=0.8  # 1-2 word phrases
         )
 
     def extract(self, text: str) -> List[str]:
@@ -234,12 +271,12 @@ class SkillExtractor:
         """
         # Try structured extraction from explicit Skills section first
         skills = self._extract_from_skills_section(text)
-        
+
         if len(skills) < self.top_n:
             # Supplement with YAKE extraction from relevant sections only
             additional = self._extract_from_relevant_sections(text)
             skills.extend(additional)
-            
+
         # Deduplicate and return
         seen = set()
         result = []
@@ -248,75 +285,90 @@ class SkillExtractor:
             if skill_lower not in seen and len(skill_lower) > 1:
                 seen.add(skill_lower)
                 result.append(skill_lower)
-                
-        return result[:self.top_n]
+
+        return result[: self.top_n]
 
     def _extract_from_skills_section(self, text: str) -> List[str]:
         """Extract from explicit Skills or Technical Skills section."""
         skills = []
-        
+
         # Look for Skills section
-        for header in ["Technical Skills", "Skills", "Core Competencies", "Technologies"]:
+        for header in [
+            "Technical Skills",
+            "Skills",
+            "Core Competencies",
+            "Technologies",
+        ]:
             if header in text:
                 try:
                     # Get text between this header and next section (or double newline)
                     section_start = text.index(header) + len(header)
                     remaining = text[section_start:]
-                    
+
                     # Find section end (double newline or next major section)
                     section_end = len(remaining)
                     for next_header in ["\n\n", "Experience", "Education", "Projects"]:
                         pos = remaining.find(next_header)
                         if pos > 0 and pos < section_end:
                             section_end = pos
-                    
+
                     section_text = remaining[:section_end].strip()
-                    
+
                     # Parse skills - check for colon-separated format first
                     for line in section_text.split("\n"):
                         if ":" in line:
                             # Format: "Category: skill1, skill2, skill3"
                             tech_list = line.split(":", 1)[1].strip()
-                            skills.extend(s.strip() for s in tech_list.split(",") if s.strip())
+                            skills.extend(
+                                s.strip() for s in tech_list.split(",") if s.strip()
+                            )
                         elif line.strip() and not line.strip().startswith("•"):
                             # Plain list of skills
-                            skills.extend(s.strip() for s in line.split(",") if s.strip())
-                    
+                            skills.extend(
+                                s.strip() for s in line.split(",") if s.strip()
+                            )
+
                     if skills:
                         break  # Found skills, no need to check other headers
-                        
+
                 except (ValueError, IndexError):
                     continue
-        
+
         return skills
 
     def _extract_from_relevant_sections(self, text: str) -> List[str]:
         """Extract keywords using YAKE but only from Experience section."""
         # Find Experience section
         experience_text = ""
-        
+
         for header in ["Experience", "Work Experience", "Professional Experience"]:
             if header in text:
                 try:
                     section_start = text.index(header) + len(header)
                     remaining = text[section_start:]
-                    
+
                     # Find section end
                     section_end = len(remaining)
-                    for next_header in ["Education", "Projects", "Publications", "Awards", "Certifications"]:
+                    for next_header in [
+                        "Education",
+                        "Projects",
+                        "Publications",
+                        "Awards",
+                        "Certifications",
+                    ]:
                         pos = remaining.find(next_header)
                         if pos > 0 and pos < section_end:
                             section_end = pos
-                    
+
                     experience_text = remaining[:section_end].strip()
                     break
-                    
+
                 except (ValueError, IndexError):
                     continue
-        
+
         if not experience_text:
             return []
-        
+
         # Run YAKE on experience section only
         try:
             keywords = self._kw_extractor.extract_keywords(experience_text)
@@ -451,14 +503,18 @@ class JobMatcher:
                         cleaned_record[key] = value.isoformat()
                     else:
                         cleaned_record[key] = value
-                
+
                 # Clean job description if present
-                if cleaned_record.get('description'):
-                    original_desc = cleaned_record['description']
-                    cleaned_record['description_full'] = original_desc
-                    cleaned_record['description'] = self._desc_cleaner.clean(original_desc)
-                    logger.debug(f"Cleaned description from {len(original_desc)} to {len(cleaned_record['description'])} chars")
-                
+                if cleaned_record.get("description"):
+                    original_desc = cleaned_record["description"]
+                    cleaned_record["description_full"] = original_desc
+                    cleaned_record["description"] = self._desc_cleaner.clean(
+                        original_desc
+                    )
+                    logger.debug(
+                        f"Cleaned description from {len(original_desc)} to {len(cleaned_record['description'])} chars"
+                    )
+
                 jobs_list.append(cleaned_record)
 
             logger.info(f"Successfully found {len(jobs_list)} jobs")
