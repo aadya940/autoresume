@@ -18,12 +18,15 @@ docker compose up --build
 
 Open [http://localhost:5173](http://localhost:5173) and enter your Gemini API key in the settings icon.
 
-## Features
+Key Features
 
-- **AI Generation**: Turn your profiles into LaTeX resumes
-- **Job Match**: Automatically find jobs for your skills
-- **Local First**: Your data stays on your machine
-- **Live Edit**: Real-time LaTeX preview
+- AI-Backed, Professional Writing – Generates resumes and cover letters following Harvard & Columbia career guidelines, so your content hits the gold standard.
+- ATS Keyword Optimization – Detect missing hard skills and critical keywords from job descriptions.
+- Automatic Job Matching – Finds jobs that fit your skills and experience, reducing guesswork in your job hunt.
+- LaTeX Formatting – Clean, reliable, ATS-friendly layouts with typographic perfection.
+- Free and Open Source
+- Full Manual Control – AI frames and optimizes; you make the final call.
+- Live Preview – See changes instantly while editing.
 
 ## Tech
 
