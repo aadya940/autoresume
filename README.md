@@ -8,6 +8,8 @@
 
 </div>
 
+Blog : https://medium.com/@aadyachinubhai/the-open-source-career-agent-that-helps-write-your-resume-professionally-and-finds-your-next-job-08d0ca17972f?postPublishedType=repub
+
 ## Quick Start
 
 ```bash
