@@ -18,7 +18,7 @@ docker compose up --build
 
 Open [http://localhost:5173](http://localhost:5173) and enter your Gemini API key in the settings icon.
 
-Key Features
+## Key Features
 
 - AI-Backed, Professional Writing – Generates resumes and cover letters following Harvard & Columbia career guidelines, so your content hits the gold standard.
 - ATS Keyword Optimization – Detect missing hard skills and critical keywords from job descriptions.
