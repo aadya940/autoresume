@@ -8,6 +8,7 @@ import BackgroundQuestionnaire from './components/BackgroundQuestionnaire';
 import JobSearch from './components/JobSearch';
 import JobDetailPage from './components/JobDetailPage';
 import CoverLetterEditor from './components/CoverLetterEditor';
+import ATSResumeEditor from './components/ATSResumeEditor';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -24,6 +25,7 @@ root.render(
           <Route path="/jobs" element={<JobSearch />} />
           <Route path="/jobs/:jobId" element={<JobDetailPage />} />
           <Route path="/cover-letter" element={<CoverLetterEditor />} />
+          <Route path="/ats-resume" element={<ATSResumeEditor />} />
         </Routes>
       </BrowserRouter>
     </Provider>

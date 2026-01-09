@@ -152,7 +152,6 @@ const JobDetailPage = () => {
                         <Button
                             variant="ghost"
                             onClick={() => navigate('/jobs')}
-                            mr={3}
                         >
                             ← Back to Jobs
                         </Button>
@@ -210,7 +209,30 @@ const JobDetailPage = () => {
                                     <Text fontSize="md" color="gray.600">{job.location}</Text>
                                 </HStack>
                             )}
+
                         </VStack>
+
+                        {/* AI Actions - Top Right */}
+                        <HStack spacing={2} align="start">
+                            <Button
+                                leftIcon={<Text>✨</Text>}
+                                colorScheme="purple"
+                                variant="outline"
+                                onClick={() => navigate('/cover-letter', { state: { job } })}
+                                size="sm"
+                            >
+                                Cover Letter
+                            </Button>
+                            <Button
+                                leftIcon={<Text>🎯</Text>}
+                                colorScheme="green"
+                                variant="outline"
+                                onClick={() => navigate('/ats-resume', { state: { job } })}
+                                size="sm"
+                            >
+                                Optimize
+                            </Button>
+                        </HStack>
                     </HStack>
 
                     {/* Job Metadata Badges */}
@@ -246,6 +268,8 @@ const JobDetailPage = () => {
                             {job.interval && ` / ${job.interval}`}
                         </Text>
                     )}
+
+
 
                     {/* Job Description - Collapsible */}
                     <Box mb={6}>
@@ -316,77 +340,7 @@ const JobDetailPage = () => {
                     </Box>
                 </Box>
 
-                {/* Cover Letter Section */}
-                <Box
-                    mt={6}
-                    p={6}
-                    bg="white"
-                    borderRadius="lg"
-                    border="1px solid"
-                    borderColor="gray.200"
-                    boxShadow="sm"
-                >
-                    <VStack align="stretch" spacing={5}>
-                        {/* Header */}
-                        <HStack spacing={3} align="center">
-                            <Box
-                                p={2}
-                                bg="blue.50"
-                                borderRadius="md"
-                            >
-                                <Text fontSize="2xl">✨</Text>
-                            </Box>
-                            <Heading size="md" color="gray.800">
-                                Cover Letter
-                            </Heading>
-                        </HStack>
 
-                        {/* Features Grid */}
-                        <HStack
-                            spacing={4}
-                            p={4}
-                            bg="gray.50"
-                            borderRadius="md"
-                            justify="space-around"
-                        >
-                            <VStack spacing={1} flex={1}>
-                                <Text fontSize="xl">📝</Text>
-                                <Text color="gray.700" fontSize="xs" fontWeight="medium" textAlign="center">
-                                    Tailored Content
-                                </Text>
-                            </VStack>
-                            <VStack spacing={1} flex={1}>
-                                <Text fontSize="xl">🎯</Text>
-                                <Text color="gray.700" fontSize="xs" fontWeight="medium" textAlign="center">
-                                    Keyword Match
-                                </Text>
-                            </VStack>
-                            <VStack spacing={1} flex={1}>
-                                <Text fontSize="xl">⚡</Text>
-                                <Text color="gray.700" fontSize="xs" fontWeight="medium" textAlign="center">
-                                    Instant Results
-                                </Text>
-                            </VStack>
-                        </HStack>
-
-                        {/* CTA Button */}
-                        <Button
-                            colorScheme="blue"
-                            size="lg"
-                            height="56px"
-                            fontSize="md"
-                            fontWeight="semibold"
-                            onClick={() => navigate('/cover-letter', { state: { job } })}
-                            _hover={{
-                                transform: 'translateY(-1px)',
-                                boxShadow: 'md',
-                            }}
-                            transition="all 0.2s"
-                        >
-                            Generate Cover Letter with AI
-                        </Button>
-                    </VStack>
-                </Box>
             </Container>
         </Box>
     );

@@ -103,11 +103,13 @@ async def search_jobs(request: JobSearchRequest):
             content={
                 "message": "Job search started",
                 "task_id": message.task_id,
-                "status": "processing"
+                "status": "processing",
             },
-            status_code=202
+            status_code=202,
         )
 
     except Exception as e:
         logger.error(f"Error dispatching job search: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Job search failed to start: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Job search failed to start: {str(e)}"
+        )

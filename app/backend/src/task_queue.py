@@ -165,51 +165,54 @@ async def _cache_links(links):
 @broker.task
 def generate_cover_letter_task(job_description: str, company: str, title: str):
     """Task to generate a job-specific cover letter."""
-    
+
     async def _generate_async():
         """Async implementation with concurrent operations."""
         logger.info(f"Generating cover letter for {company} - {title}")
-        
+
         try:
             # Import here to avoid circular imports
             from ai.cover_letter import CoverLetterGenerator
-            
+
             # Concurrent: Create generator and validate paths
             generator = CoverLetterGenerator()
-            
+
             # Generate cover letter (already async)
             result = await generator.generate(
-                job_description=job_description,
-                company=company,
-                title=title
+                job_description=job_description, company=company, title=title
             )
-            
+
             # Ensure assets directory exists
             from pathlib import Path
+
             assets_dir = Path("assets")
             assets_dir.mkdir(parents=True, exist_ok=True)
-            
+
             # Write and compile using asyncio.to_thread for I/O
             tex_path = assets_dir / "generated_cover_letter.tex"
-            
+
             await asyncio.to_thread(
-                lambda: open(tex_path, "w", encoding="utf-8").write(result["tex_content"])
+                lambda: open(tex_path, "w", encoding="utf-8").write(
+                    result["tex_content"]
+                )
             )
-            
+
             await asyncio.to_thread(compile_tex, str(assets_dir), str(tex_path))
-            
-            logger.info(f"Cover letter generated and compiled successfully for {company}")
-            
+
+            logger.info(
+                f"Cover letter generated and compiled successfully for {company}"
+            )
+
             return {
                 "status": "completed",
                 "message": f"Cover letter generated for {company}",
-                "keywords_matched": result["keywords_matched"]
+                "keywords_matched": result["keywords_matched"],
             }
-            
+
         except Exception as e:
             logger.error(f"Error in cover letter generation: {str(e)}", exc_info=True)
             raise
-    
+
     # Run in new event loop (same as other tasks)
     try:
         loop = asyncio.new_event_loop()
@@ -220,6 +223,77 @@ def generate_cover_letter_task(job_description: str, company: str, title: str):
             loop.close()
     except Exception as e:
         logger.error(f"Error in generate_cover_letter_task: {str(e)}", exc_info=True)
+        raise
+
+
+@broker.task
+def generate_ats_resume_task(job_description: str, company: str, title: str):
+    """Task to generate ATS-optimized resume for specific job."""
+
+    async def _generate_async():
+        """Async implementation for ATS resume generation."""
+        logger.info(f"Generating ATS resume for {company} - {title}")
+
+        try:
+            # Import here to avoid circular imports
+            from ai.ats_optimizer import ResumeATSOptimizer
+
+            # Create optimizer
+            optimizer = ResumeATSOptimizer(top_keywords=20)
+
+            # Generate optimized resume
+            resume_path = Path("assets/user_file.tex")
+            result = await asyncio.to_thread(
+                optimizer.optimize,
+                job_description=job_description,
+                company=company,
+                title=title,
+                resume_path=resume_path,
+            )
+
+            # Ensure assets directory exists
+            assets_dir = Path("assets")
+            assets_dir.mkdir(parents=True, exist_ok=True)
+
+            # Write optimized resume
+            tex_path = assets_dir / "optimized_resume.tex"
+
+            await asyncio.to_thread(
+                lambda: open(tex_path, "w", encoding="utf-8").write(
+                    result["tex_content"]
+                )
+            )
+
+            # Compile to PDF
+            await asyncio.to_thread(compile_tex, str(assets_dir), str(tex_path))
+
+            logger.info(
+                f"ATS resume generated and compiled successfully for {company}. "
+                f"Added {len(result['keywords_added'])} keywords, "
+                f"matched {len(result['keywords_matched'])} existing."
+            )
+
+            return {
+                "status": "completed",
+                "message": f"ATS resume generated for {company}",
+                "keywords_added": result["keywords_added"],
+                "keywords_matched": result["keywords_matched"],
+            }
+
+        except Exception as e:
+            logger.error(f"Error in ATS resume generation: {str(e)}", exc_info=True)
+            raise
+
+    # Run in new event loop (same as other tasks)
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            return loop.run_until_complete(_generate_async())
+        finally:
+            loop.close()
+    except Exception as e:
+        logger.error(f"Error in generate_ats_resume_task: {str(e)}", exc_info=True)
         raise
 
 
@@ -240,7 +314,9 @@ def clear_resume_task():
 
 
 @broker.task
-def job_search_task(resume_path: str, location: str, job_title: str, max_results: int, sites: list):
+def job_search_task(
+    resume_path: str, location: str, job_title: str, max_results: int, sites: list
+):
     """
     Async task for job search.
     """
@@ -268,13 +344,7 @@ def job_search_task(resume_path: str, location: str, job_title: str, max_results
     except Exception as e:
         logger.error(f"Error in job_search_task: {str(e)}", exc_info=True)
         # Return error structure so frontend can handle it
-        return {
-            "success": False,
-            "jobs": [],
-            "total_jobs": 0,
-            "error": str(e)
-        }
-
+        return {"success": False, "jobs": [], "total_jobs": 0, "error": str(e)}
 
 
 def run_worker():

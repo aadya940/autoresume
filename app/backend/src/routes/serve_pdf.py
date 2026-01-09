@@ -9,10 +9,24 @@ serve_pdf_router = APIRouter()
 
 
 @serve_pdf_router.get("/api/serve_pdf")
-async def serve_pdf(file_type: str = "pdf", download: bool = False, cover_letter: bool = False):
+async def serve_pdf(
+    file_type: str = "pdf",
+    download: bool = False,
+    cover_letter: bool = False,
+    ats_resume: bool = False,
+):
 
-    # Determine filename based on cover_letter flag
-    if cover_letter:
+    # Determine filename based on flags
+    if ats_resume:
+        # ATS-optimized resume
+        if file_type == "tex":
+            filename: str = "optimized_resume.tex"
+            media_type = "application/x-tex"
+        else:
+            filename: str = "optimized_resume.pdf"
+            media_type = "application/pdf"
+    elif cover_letter:
+        # Cover letter
         if file_type == "tex":
             filename: str = "generated_cover_letter.tex"
             media_type = "application/x-tex"
@@ -20,6 +34,7 @@ async def serve_pdf(file_type: str = "pdf", download: bool = False, cover_letter
             filename: str = "generated_cover_letter.pdf"
             media_type = "application/pdf"
     else:
+        # Regular resume
         if file_type == "tex":
             filename: str = "user_file.tex"
             media_type = "application/x-tex"

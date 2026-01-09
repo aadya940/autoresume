@@ -13,6 +13,7 @@ from routes import (
 from routes.sse import sse_router
 from routes.questionnaire import questionnaire_router
 from routes.job_search import job_search_router
+from routes.ats_resume import ats_resume_router
 
 
 from utils import initialise_pdf
@@ -53,6 +54,7 @@ app.include_router(save_settings_router)
 app.include_router(questionnaire_router)
 app.include_router(job_search_router)
 app.include_router(cover_letter_router)
+app.include_router(ats_resume_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
